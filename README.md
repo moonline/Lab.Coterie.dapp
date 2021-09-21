@@ -2,8 +2,16 @@
 
 ## Installation
 
-Install nodejs, yarn
+Install nodejs, yarn, truffle
 
 ```shell
 yarn install
 ```
+
+## Compile
+
+```shell
+truffle compile
+```
+
+
