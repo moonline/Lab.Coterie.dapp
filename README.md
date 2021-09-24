@@ -14,4 +14,8 @@ yarn install
 truffle compile
 ```
 
+## Test
 
+```shell
+truffle test
+```
