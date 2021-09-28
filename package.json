@@ -5,6 +5,10 @@
   "devDependencies": {
     "truffle-assertions": "^0.9.2"
   },
+  "scripts": {
+    "test": "truffle test",
+    "compile": "truffle compile"
+  },
   "name": "coterie",
   "version": "0.1.0",
   "description": "A democratic community smart contract",
