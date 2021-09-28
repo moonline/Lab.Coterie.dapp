@@ -28,7 +28,7 @@ contract Coterie {
 	function createCandidature() public {	
         require(candidatures[msg.sender].exists == false, "CreateError: Candidature does already exist");
 
-        Candidature storage candidature = candidatures[msg.sender];
+		Candidature storage candidature = candidatures[msg.sender];
         candidature.exists = true;
 	}
 
