@@ -15,9 +15,8 @@ contract Coterie {
 	EnumerableSet.AddressSet private members;
 	mapping (address => Candidature) candidatures;
 
-    // TODO check storage
-	constructor(string memory coterieName) {
-		name = coterieName;
+	constructor(string memory _name) {
+		name = _name;
       
 		Candidature storage candidature = candidatures[msg.sender];
         candidature.exists = true;
@@ -37,16 +36,19 @@ contract Coterie {
 		//require(contains(members,msg.sender), "PermissionError: Only members can access candidatures");
 	//}
 
-    // get #votes
+    // get number of votes for candidate
 	function getCandidature() public view returns (uint) {
 		require(candidatures[msg.sender].exists == true, "NotFoundError: Candidature does not exist");
 
 		return EnumerableSet.length(candidatures[msg.sender].votes);
 	}
 
-    // TODO check return memory
+    // get all members
 	function getMembers() public view returns (address[] memory) {
-		require(EnumerableSet.contains(members, msg.sender) == true, "PermissionError: Only members can access member list");
+		require(
+            EnumerableSet.contains(members, msg.sender) == true,
+            "PermissionError: Only members can access member list"
+        );
 
 		return EnumerableSet.values(members);
 	}
