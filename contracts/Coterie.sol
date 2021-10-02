@@ -13,22 +13,23 @@ contract Coterie {
 
     string public name;
 	EnumerableSet.AddressSet private members;
-	mapping (address => Candidature) candidatures;
+	mapping (address => Candidature) private candidatures;
 
 	constructor(string memory _name) {
 		name = _name;
       
-		Candidature storage candidature = candidatures[msg.sender];
-        candidature.exists = true;
+        candidatures[msg.sender].exists = true;
 
 		EnumerableSet.add(members, msg.sender);
 	}
 
-	function createCandidature() public {	
+    // TODO: allow storage modification
+	function createCandidature() public returns (uint) {	
         require(candidatures[msg.sender].exists == false, "CreateError: Candidature does already exist");
 
-		Candidature storage candidature = candidatures[msg.sender];
-        candidature.exists = true;
+        candidatures[msg.sender].exists = true;
+
+        return EnumerableSet.length(candidatures[msg.sender].votes); 
 	}
 
 	//function getCandidatures() {
