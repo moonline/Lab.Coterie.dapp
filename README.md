@@ -18,4 +18,6 @@ truffle compile
 
 ```shell
 truffle test
+# run only tests matching regex
+truffle test -g "should have a candidature"
 ```
