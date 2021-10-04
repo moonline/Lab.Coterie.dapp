@@ -2,6 +2,7 @@ const assertions = { ...assert, ...require('truffle-assertions') };
 
 const Coterie = artifacts.require('Coterie');
 
+
 const weiToEth = (wei) => web3.utils.fromWei(String(wei), 'ether');
 
 const getEtherBalance = async (account) => {
