@@ -1,23 +1,50 @@
-# Test dApp
+# Coterie dApp
 
-## Installation
+Create a democratic communities on the Éthereum blockchain.
 
-Install nodejs, yarn, truffle
 
-```shell
+## Development
+
+### Environment
+
+Install:
+
+* [Node.js](https://nodejs.org/en/download/)
+* [Yarn](https://classic.yarnpkg.com/en/docs/install)
+* [Truffle](https://www.trufflesuite.com/docs/truffle/getting-started/installation) (global)
+
+### Install dependencies
+
+```sh
 yarn install
 ```
 
-## Compile
+### Compile
 
-```shell
+```sh
 truffle compile
 ```
 
-## Test
+### Migrate
 
-```shell
-truffle test
+```sh
+# start ganache network
+yarn network
+# run migrations
+truffle migrate
+```
+
+### Test
+
+```sh
+# start ganache network
+yarn network
+```
+```sh
+# run all tests
+yarn test
+# run only a specific file
+yarn test test/Coterie.test.js
 # run only tests matching regex
-truffle test -g "should have a candidature"
+yarn test -g "should have a candidature"
 ```

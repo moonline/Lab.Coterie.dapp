@@ -20,17 +20,19 @@ library Candidatures {
         address[] keys;
     }
 
-    function add(CandidatureList storage self, address candidate) public {
-        self.items[candidate].exists = true;
-        self.keys.push(candidate);
-    }
-
     function contains(CandidatureList storage self, address candidate) public view returns (bool) {
         return self.items[candidate].exists == true;
     }
 
     function length(CandidatureList storage self) public view returns (uint) {
         return self.keys.length;
+    }
+
+    function add(CandidatureList storage self, address candidate) public {
+        require(!contains(self, candidate), "CreateError: Candidature already exists");
+
+        self.items[candidate].exists = true;
+        self.keys.push(candidate);
     }
 
     function values(CandidatureList storage self) public view returns (CandidatureView[] memory) {
@@ -44,4 +46,12 @@ library Candidatures {
         }
         return candidatureViews;
     }
+
+    /*
+    function vote(CandidatureList storage self, address candidate) public {
+        require(contains(self, candidate), "NotFoundError: No candidature found for candidate");
+
+        EnumerableSet.add(self.items[candidate].votes, msg.sender);
+    }
+    */
 }
