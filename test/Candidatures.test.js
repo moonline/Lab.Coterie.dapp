@@ -46,7 +46,7 @@ contract('Candidatures library', ([userA, userB, userC]) => {
         });
     });
 
-    describe.only('users B and C vote for user A', async () => {
+    describe('users B and C vote for user A', async () => {
         let instance;
 
         beforeEach(async () => {
