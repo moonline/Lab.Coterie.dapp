@@ -25,4 +25,12 @@ contract CandidaturesMock {
     function values() public view returns (Candidatures.CandidatureView[] memory) {
         return Candidatures.values(list);
     }
+    
+    function vote(address candidate, address voter) public {
+        return Candidatures.vote(list, candidate, voter);
+    }
+
+    function numberOfVotes(address candidate) public view returns (uint) {
+        return Candidatures.numberOfVotes(list, candidate);
+    }
 }

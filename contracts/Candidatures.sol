@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 library Candidatures {
     struct Candidature {
+        // This is not optimal from a privacy perspective. Don't use this in production.
+        // This should be replaced by something like a user-choosen identifier/signature not revealing its identity
         EnumerableSet.AddressSet votes;
         bool exists;
     }
@@ -47,11 +49,16 @@ library Candidatures {
         return candidatureViews;
     }
 
-    /*
-    function vote(CandidatureList storage self, address candidate) public {
+    function vote(CandidatureList storage self, address candidate, address voter) public {
+        require(contains(self, candidate), "NotFoundError: No candidature found for candidate");
+        require(candidate != voter, "PermissionError: A candidate can not vote for himself");
+
+        EnumerableSet.add(self.items[candidate].votes, voter);
+    }
+
+    function numberOfVotes(CandidatureList storage self, address candidate) public view returns (uint) {
         require(contains(self, candidate), "NotFoundError: No candidature found for candidate");
 
-        EnumerableSet.add(self.items[candidate].votes, msg.sender);
+        return EnumerableSet.length(self.items[candidate].votes);
     }
-    */
 }

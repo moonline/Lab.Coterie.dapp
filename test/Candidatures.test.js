@@ -45,5 +45,41 @@ contract('Candidatures library', ([userA, userB, userC]) => {
             );
         });
     });
+
+    describe.only('users B and C vote for user A', async () => {
+        let instance;
+
+        beforeEach(async () => {
+            instance = await CandidaturesMock.new();
+            await instance.add(userA);
+            await instance.add(userB);
+            await instance.vote(userA, userB);
+            await instance.vote(userA, userC);
+        });
+
+        it('should have 2 votes for user A ', async () => {
+            assertions.equal(await instance.numberOfVotes(userA), 2);
+            assertions.equal(await instance.numberOfVotes(userB), 0);
+        });
+
+        it('should not allow voting itself', async () => {
+            await assertions.reverts(                
+                instance.vote(userA, userA),
+                'PermissionError: A candidate can not vote for himself'
+            );
+        });
+
+        it('should not increment votes for second vote of user B', async () => {
+            await instance.vote(userA, userB);
+            assertions.equal(await instance.numberOfVotes(userA), 2);
+        });
+
+        it('should fail voting a not existing candidature', async () => {
+            await assertions.reverts(
+                instance.vote(userC, userA),
+                'NotFoundError: No candidature found for candidate'
+            );
+        });
+    });
 });
 
