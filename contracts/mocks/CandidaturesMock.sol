@@ -10,24 +10,24 @@ contract CandidaturesMock {
 
     Candidatures.CandidatureList private list;
 
-    function length() public view returns (uint) {
-        return Candidatures.length(list);
+    function numberOfCandidatures() public view returns (uint) {
+        return Candidatures.numberOfCandidatures(list);
     }
 
-    function contains(address candidate) public view returns (bool) {
-        return Candidatures.contains(list, candidate);
+    function hasCandidature(address candidate) public view returns (bool) {
+        return Candidatures.hasCandidature(list, candidate);
     }
 
-    function add(address candidate) public {
-        return Candidatures.add(list, candidate);
+    function addCandidature(address candidate) public {
+        return Candidatures.addCandidature(list, candidate);
     }
 
-    function values() public view returns (Candidatures.CandidatureView[] memory) {
-        return Candidatures.values(list);
+    function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
+        return Candidatures.getCandidatures(list);
     }
     
-    function vote(address candidate, address voter) public {
-        return Candidatures.vote(list, candidate, voter);
+    function addVote(address candidate, address voter) public {
+        return Candidatures.addVote(list, candidate, voter);
     }
 
     function numberOfVotes(address candidate) public view returns (uint) {

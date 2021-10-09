@@ -22,22 +22,22 @@ library Candidatures {
         address[] keys;
     }
 
-    function contains(CandidatureList storage self, address candidate) public view returns (bool) {
+    function hasCandidature(CandidatureList storage self, address candidate) public view returns (bool) {
         return self.items[candidate].exists == true;
     }
 
-    function length(CandidatureList storage self) public view returns (uint) {
+    function numberOfCandidatures(CandidatureList storage self) public view returns (uint) {
         return self.keys.length;
     }
 
-    function add(CandidatureList storage self, address candidate) public {
-        require(!contains(self, candidate), "CreateError: Candidature already exists");
+    function addCandidature(CandidatureList storage self, address candidate) public {
+        require(!hasCandidature(self, candidate), "CreateError: Candidature already exists");
 
         self.items[candidate].exists = true;
         self.keys.push(candidate);
     }
 
-    function values(CandidatureList storage self) public view returns (CandidatureView[] memory) {
+    function getCandidatures(CandidatureList storage self) public view returns (CandidatureView[] memory) {
         CandidatureView[] memory candidatureViews = new CandidatureView[](self.keys.length);
         for (uint i = 0; i < self.keys.length; i++) {
             CandidatureView memory candidatureView = CandidatureView(
@@ -49,15 +49,15 @@ library Candidatures {
         return candidatureViews;
     }
 
-    function vote(CandidatureList storage self, address candidate, address voter) public {
-        require(contains(self, candidate), "NotFoundError: No candidature found for candidate");
+    function addVote(CandidatureList storage self, address candidate, address voter) public {
+        require(hasCandidature(self, candidate), "NotFoundError: No candidature found for candidate");
         require(candidate != voter, "PermissionError: A candidate can not vote for himself");
 
         EnumerableSet.add(self.items[candidate].votes, voter);
     }
 
     function numberOfVotes(CandidatureList storage self, address candidate) public view returns (uint) {
-        require(contains(self, candidate), "NotFoundError: No candidature found for candidate");
+        require(hasCandidature(self, candidate), "NotFoundError: No candidature found for candidate");
 
         return EnumerableSet.length(self.items[candidate].votes);
     }
