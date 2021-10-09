@@ -57,7 +57,7 @@ contract('Candidatures library', ([userA, userB, userC]) => {
             await instance.addVote(userA, userC);
         });
 
-        it('should have 2 votes for user A ', async () => {
+        it('should have 2 votes for user A', async () => {
             assertions.equal(await instance.numberOfVotes(userA), 2);
         });
 
@@ -83,6 +83,17 @@ contract('Candidatures library', ([userA, userB, userC]) => {
                 instance.addVote(userC, userA),
                 'NotFoundError: No candidature found for candidate'
             );
+        });
+
+        it('should have 1 remaining vote for user A on remote removal of user C', async () => {
+            await instance.removeVote(userA, userC);
+            assertions.equal(await instance.numberOfVotes(userA), 1);
+        });
+
+        it('should have 1 remaining vote for user A on remote removal of user C twice', async () => {
+            await instance.removeVote(userA, userC);
+            await instance.removeVote(userA, userC);
+            assertions.equal(await instance.numberOfVotes(userA), 1);
         });
     });
 });

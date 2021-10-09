@@ -33,4 +33,8 @@ contract CandidaturesMock {
     function numberOfVotes(address candidate) public view returns (uint) {
         return Candidatures.numberOfVotes(list, candidate);
     }
+
+    function removeVote(address candidate, address voter) public {
+        return Candidatures.removeVote(list, candidate, voter);
+    }
 }

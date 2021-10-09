@@ -22,6 +22,7 @@ library Candidatures {
         address[] keys;
     }
 
+    // candidatures
     function hasCandidature(CandidatureList storage self, address candidate) public view returns (bool) {
         return self.items[candidate].exists == true;
     }
@@ -49,6 +50,13 @@ library Candidatures {
         return candidatureViews;
     }
 
+    // votes
+    function numberOfVotes(CandidatureList storage self, address candidate) public view returns (uint) {
+        require(hasCandidature(self, candidate), "NotFoundError: No candidature found for candidate");
+
+        return EnumerableSet.length(self.items[candidate].votes);
+    }
+
     function addVote(CandidatureList storage self, address candidate, address voter) public {
         require(hasCandidature(self, candidate), "NotFoundError: No candidature found for candidate");
         require(candidate != voter, "PermissionError: A candidate can not vote for himself");
@@ -56,9 +64,8 @@ library Candidatures {
         EnumerableSet.add(self.items[candidate].votes, voter);
     }
 
-    function numberOfVotes(CandidatureList storage self, address candidate) public view returns (uint) {
+    function removeVote(CandidatureList storage self, address candidate, address voter) public {
         require(hasCandidature(self, candidate), "NotFoundError: No candidature found for candidate");
-
-        return EnumerableSet.length(self.items[candidate].votes);
+        EnumerableSet.remove(self.items[candidate].votes, voter);
     }
 }
