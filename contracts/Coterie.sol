@@ -21,23 +21,35 @@ contract Coterie {
 		EnumerableSet.add(members, msg.sender);
 	}
 
+    // candidatures
 	function createCandidature() public {
         Candidatures.addCandidature(candidatures, msg.sender);
 	}
 
-	/*function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
-		require(contains(members,msg.sender), "PermissionError: Only members can access candidatures");
-        return Candidatures.getCandidature(candidatures);
-	}*/
+	function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
+		require(
+            EnumerableSet.contains(members, msg.sender),
+            "PermissionError: Only members can access candidatures"
+        );
 
+        return Candidatures.getCandidatures(candidatures);
+	}
+
+    // votes
 	function numberOfMyVotes() public view returns (uint) {
 		return Candidatures.numberOfVotes(candidatures, msg.sender);
 	}
+    /*
+    function vote(address candidate) public {
+        return Candidatures.addVote(candidatures, candidate, msg.sender);
 
-    // get all members
+        // TODO review membership
+    }
+    */
+    // members
 	function getMembers() public view returns (address[] memory) {
 		require(
-            EnumerableSet.contains(members, msg.sender) == true,
+            EnumerableSet.contains(members, msg.sender),
             "PermissionError: Only members can access member list"
         );
 
