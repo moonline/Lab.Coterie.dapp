@@ -3,41 +3,35 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
+import { Candidatures } from "./Candidatures.sol";
 
-struct Candidature {
-    EnumerableSet.AddressSet votes;
-    bool exists;
-}
 
 contract Coterie {
 	using EnumerableSet for EnumerableSet.AddressSet;
+    using Candidatures for Candidatures.CandidatureList;
+    using Candidatures for Candidatures.CandidatureView;
 
     string public name;
 	EnumerableSet.AddressSet private members;
-	mapping (address => Candidature) private candidatures;
+	Candidatures.CandidatureList private candidatures;
 
 	constructor(string memory _name) {
-		name = _name;      
-        candidatures[msg.sender].exists = true;
+		name = _name;
+        Candidatures.addCandidature(candidatures, msg.sender);
 		EnumerableSet.add(members, msg.sender);
 	}
 
-	function createCandidature() public {	
-        require(candidatures[msg.sender].exists == false, "CreateError: Candidature does already exist");
-
-        candidatures[msg.sender].exists = true;
+	function createCandidature() public {
+        Candidatures.addCandidature(candidatures, msg.sender);
 	}
 
-	//function getCandidatures() {
-		// TODO implement candidature map
-		//require(contains(members,msg.sender), "PermissionError: Only members can access candidatures");
-	//}
+	/*function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
+		require(contains(members,msg.sender), "PermissionError: Only members can access candidatures");
+        return Candidatures.getCandidature(candidatures);
+	}*/
 
-    // get number of votes for candidate
-	function getCandidature() public view returns (uint) {
-		require(candidatures[msg.sender].exists == true, "NotFoundError: Candidature does not exist");
-
-		return EnumerableSet.length(candidatures[msg.sender].votes);
+	function numberOfMyVotes() public view returns (uint) {
+		return Candidatures.numberOfVotes(candidatures, msg.sender);
 	}
 
     // get all members
