@@ -22,10 +22,15 @@ contract CandidaturesMock {
         return Candidatures.addCandidature(list, candidate);
     }
 
+
+    function removeCandidature(address candidate) public {
+        return Candidatures.removeCandidature(list, candidate);
+    }
+    
     function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
         return Candidatures.getCandidatures(list);
     }
-    
+
     function addVote(address candidate, address voter) public {
         return Candidatures.addVote(list, candidate, voter);
     }

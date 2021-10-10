@@ -44,6 +44,23 @@ contract('Candidatures library', ([userA, userB, userC]) => {
                 'CreateError: Candidature already exists'
             );
         });
+
+        it('should fail when not existing candidature is removed', async () => {
+            await assertions.reverts(
+                instance.removeCandidature(userC),
+                'NotFoundError: No candidature found for candidate'
+            );
+        });
+
+        it('should only have a candidature for user C and B when A`s candidature is removed', async () => {
+            await instance.addCandidature(userC);
+            await instance.removeCandidature(userA);
+
+            let expectedValues = [[ userC, "0" ],[ userB, "0" ]];
+            assertions.deepEqual(await instance.getCandidatures(), expectedValues);
+            assertions.equal(await instance.numberOfCandidatures(), 2);
+            assertions.isFalse(await instance.hasCandidature(userA));
+        });
     });
 
     describe('users B and C vote for user A', async () => {
@@ -86,12 +103,6 @@ contract('Candidatures library', ([userA, userB, userC]) => {
         });
 
         it('should have 1 remaining vote for user A on remote removal of user C', async () => {
-            await instance.removeVote(userA, userC);
-            assertions.equal(await instance.numberOfVotes(userA), 1);
-        });
-
-        it('should have 1 remaining vote for user A on remote removal of user C twice', async () => {
-            await instance.removeVote(userA, userC);
             await instance.removeVote(userA, userC);
             assertions.equal(await instance.numberOfVotes(userA), 1);
         });

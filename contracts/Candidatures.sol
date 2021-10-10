@@ -7,8 +7,9 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 library Candidatures {
     struct Candidature {
         // This is not optimal from a privacy perspective. Don't use this in production.
-        // This should be replaced by something like a user-choosen identifier/signature not revealing its identity
+        // This should be replaced by something like an anonymous signature not revealing its identity
         EnumerableSet.AddressSet votes;
+        uint keyIndex;
         bool exists;
     }
 
@@ -36,6 +37,22 @@ library Candidatures {
 
         self.items[candidate].exists = true;
         self.keys.push(candidate);
+        self.items[candidate].keyIndex = self.keys.length-1;
+    }
+
+    // remove candidature and move last candidature to its place
+    // this is cheaper than moving all the items
+    function removeCandidature(CandidatureList storage self, address candidate) public {
+        require(hasCandidature(self, candidate), "NotFoundError: No candidature found for candidate");
+
+        uint keyIndex = self.items[candidate].keyIndex;
+        delete self.items[candidate];
+        
+        if (self.keys.length > 1) {
+            self.keys[keyIndex] = self.keys[self.keys.length - 1];
+            self.items[self.keys[keyIndex]].keyIndex = keyIndex;
+        }
+        self.keys.pop();
     }
 
     function getCandidatures(CandidatureList storage self) public view returns (CandidatureView[] memory) {
