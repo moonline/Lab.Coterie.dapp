@@ -53,14 +53,6 @@ contract Coterie {
         return ((votes * 1000 / EnumerableSet.length(members)) + 5) / 10;
     }
 
-    function getVotationResult2(address candidate) public view returns (uint, uint, uint, uint) {
-        bool isMember = EnumerableSet.contains(members, candidate);
-        uint8 membershipSelfVote = isMember ? 1 : 0;
-        uint votes = numberOfVotes(candidate) + membershipSelfVote;
-
-        return (((votes * 1000 / EnumerableSet.length(members)) + 5) / 10, EnumerableSet.length(members), votes, votes * 100 / EnumerableSet.length(members));
-    }
-
     function vote(address candidate) public {
         require(
             EnumerableSet.contains(members, msg.sender),
