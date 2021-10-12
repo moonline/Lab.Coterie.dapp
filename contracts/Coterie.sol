@@ -10,6 +10,7 @@ contract Coterie {
 	using EnumerableSet for EnumerableSet.AddressSet;
     using Candidatures for Candidatures.CandidatureList;
     using Candidatures for Candidatures.CandidatureView;
+    
 
     string public name;
 	EnumerableSet.AddressSet private members;
@@ -36,17 +37,56 @@ contract Coterie {
 	}
 
     // votes
+	function numberOfVotes(address candidate) public view returns (uint) {
+		return Candidatures.numberOfVotes(candidatures, candidate);
+	}
+
 	function numberOfMyVotes() public view returns (uint) {
 		return Candidatures.numberOfVotes(candidatures, msg.sender);
 	}
-    /*
-    function vote(address candidate) public {
-        return Candidatures.addVote(candidatures, candidate, msg.sender);
 
-        // TODO review membership
+    function getVotationResult(address candidate) public view returns (uint) {
+        bool isMember = EnumerableSet.contains(members, candidate);
+        uint8 membershipSelfVote = isMember ? 1 : 0;
+        uint votes = numberOfVotes(candidate) + membershipSelfVote;
+
+        return ((votes * 1000 / EnumerableSet.length(members)) + 5) / 10;
     }
-    */
+
+    function getVotationResult2(address candidate) public view returns (uint, uint, uint, uint) {
+        bool isMember = EnumerableSet.contains(members, candidate);
+        uint8 membershipSelfVote = isMember ? 1 : 0;
+        uint votes = numberOfVotes(candidate) + membershipSelfVote;
+
+        return (((votes * 1000 / EnumerableSet.length(members)) + 5) / 10, EnumerableSet.length(members), votes, votes * 100 / EnumerableSet.length(members));
+    }
+
+    function vote(address candidate) public {
+        require(
+            EnumerableSet.contains(members, msg.sender),
+            "PermissionError: Only members can vote candidatures"
+        );
+        Candidatures.addVote(candidatures, candidate, msg.sender);
+
+        reviewMemberShip(candidate);
+    }
+
     // members
+    function reviewMemberShip(address candidate) internal {
+        uint16 MEMBERSHIP_BREAKPOINT = 50;
+        bool isMember = EnumerableSet.contains(members, candidate);
+
+        if (getVotationResult(candidate) > MEMBERSHIP_BREAKPOINT) {
+            if (!isMember) {
+                EnumerableSet.add(members, candidate);
+            }
+        } else {
+            if (isMember) {
+                EnumerableSet.remove(members, candidate);
+            }
+        }
+    }
+
 	function getMembers() public view returns (address[] memory) {
 		require(
             EnumerableSet.contains(members, msg.sender),

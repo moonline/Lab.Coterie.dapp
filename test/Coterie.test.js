@@ -62,17 +62,6 @@ contract('Coterie', ([userA, userB, userC]) => {
                 'NotFoundError: No candidature found for candidate'
             );
         });
-    });
-
-    describe('An other coterie', () => {
-        let instance;
-
-        before(async () => {
-            instance = await Coterie.new(
-                'Test club 2',
-                { from: userA }
-            );
-        });
 
         it('should have candidatures with 0 votes for users A and B when user B creates a candidature', async () => {
             let expectedValues = [[ userA, "0" ],[ userB, "0" ]];
@@ -83,6 +72,48 @@ contract('Coterie', ([userA, userB, userC]) => {
                 expectedValues
             );
         });
+    });
+
+    describe('A coterie with a vote for user B', () => {
+        let instance;
+
+        before(async () => {
+            instance = await Coterie.new(
+                'Test club 2',
+                { from: userA }
+            );
+            await instance.createCandidature({ from: userB });
+            await instance.vote(userB, { from: userA });
+        });
+
+        it('should have 1 vote for user B when A votes for B', async () => {
+            assertions.equal(await instance.numberOfMyVotes({ from: userB }), 1);
+            assertions.equal(await instance.numberOfVotes(userB, { from: userA }), 1);
+        });
+
+        it('should not allow not-member C to vote', async () => {
+            await assertions.reverts(
+                instance.vote(userB, { from: userC }),
+                'PermissionError: Only members can vote candidatures'
+            );
+        });
+
+        it('should have 100% of the votes', async () => {
+            assertions.equal(await instance.getVotationResult(userB), 100);
+        });
+
+        it('should raise user B to member', async () => {
+            assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB]);
+        });
+
+        it('should have 50% of the votes for a new candidature with only 1 vote', async () => {
+            await instance.createCandidature({ from: userC });
+            await instance.vote(userC, { from: userA });
+            assertions.equal(await instance.getVotationResult(userC), 50);
+        });
+
+        // TODO more tests on member addition
+        // move calculation to getter
     });
 });
 
