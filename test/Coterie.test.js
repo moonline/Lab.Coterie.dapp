@@ -10,7 +10,7 @@ const getEtherBalance = async (account) => {
     return weiToEth(balanceWei, 'ether');
 };
 
-contract('Coterie', ([userA, userB, userC]) => {
+contract('Coterie', ([userA, userB, userC, userD]) => {
     describe('A coterie created by user A', () => {
         let instance;
 
@@ -76,7 +76,9 @@ contract('Coterie', ([userA, userB, userC]) => {
 
     describe('A coterie with a vote for user B', () => {
         let instance;
-
+        
+        // These tests depend on each other!
+        // TODO FIX this
         before(async () => {
             instance = await Coterie.new(
                 'Test club 2',
@@ -86,7 +88,7 @@ contract('Coterie', ([userA, userB, userC]) => {
             await instance.vote(userB, { from: userA });
         });
 
-        it('should have 1 vote for user B when A votes for B', async () => {
+        it('should have 1 vote for user B', async () => {
             assertions.equal(await instance.numberOfMyVotes({ from: userB }), 1);
             assertions.equal(await instance.numberOfVotes(userB, { from: userA }), 1);
         });
@@ -98,8 +100,8 @@ contract('Coterie', ([userA, userB, userC]) => {
             );
         });
 
-        it('should have 100% of the votes', async () => {
-            assertions.equal(await instance.getVotationResult(userB), 100);
+        it('should have 100% of the votes for user B', async () => {
+            assertions.equal((await instance.getVotationResult(userB)).toNumber(), 100);
         });
 
         it('should raise user B to member', async () => {
@@ -109,11 +111,30 @@ contract('Coterie', ([userA, userB, userC]) => {
         it('should have 50% of the votes for a new candidature with only 1 vote', async () => {
             await instance.createCandidature({ from: userC });
             await instance.vote(userC, { from: userA });
-            assertions.equal(await instance.getVotationResult(userC), 50);
+            assertions.equal((await instance.getVotationResult(userC)).toNumber(), 50);
+            assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB]);
         });
 
-        // TODO more tests on member addition
-        // move calculation to getter
+        it('should have 100% of votes and raise C to member when B votes', async () => {
+            await instance.vote(userC, { from: userB });
+
+            assertions.equal((await instance.getVotationResult(userC)).toNumber(), 100);
+            assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB, userC]);
+        });
+
+        it('should have 33% of the votes for D when B votes', async () => {
+            await instance.createCandidature({ from: userD });
+            await instance.vote(userD, { from: userB });
+
+            assertions.equal((await instance.getVotationResult(userD)).toNumber(), 33);
+            assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB, userC]);
+        });
+
+        it('should have 75% of the votes D when A votes', async () => {
+            await instance.vote(userD, { from: userA });
+
+            assertions.equal((await instance.getVotationResult(userD)).toNumber(), 75);
+        });
     });
 });
 
