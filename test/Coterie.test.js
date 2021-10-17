@@ -77,9 +77,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
     describe('A coterie with a vote for user B', () => {
         let instance;
         
-        // These tests depend on each other!
-        // TODO FIX this
-        before(async () => {
+        beforeEach(async () => {
             instance = await Coterie.new(
                 'Test club 2',
                 { from: userA }
@@ -111,21 +109,37 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         it('should have 50% of the votes for a new candidature with only 1 vote', async () => {
             await instance.createCandidature({ from: userC });
             await instance.vote(userC, { from: userA });
+
             assertions.equal((await instance.getVotationResult(userC)).toNumber(), 50);
             assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB]);
         });
+    });
 
-        it('should have 100% of votes and raise C to member when B votes', async () => {
+    describe('A coterie with 3 members', () => {
+        let instance;
+        
+        beforeEach(async () => {
+            instance = await Coterie.new(
+                'Test club 2',
+                { from: userA }
+            );
+            await instance.createCandidature({ from: userB });
+            await instance.vote(userB, { from: userA });
+
+            await instance.createCandidature({ from: userC });
+            await instance.vote(userC, { from: userA });
             await instance.vote(userC, { from: userB });
 
+            await instance.createCandidature({ from: userD });
+            await instance.vote(userD, { from: userB });
+        });
+
+        it('should have 100% of votes and raise C to member when B votes', async () => {
             assertions.equal((await instance.getVotationResult(userC)).toNumber(), 100);
             assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB, userC]);
         });
 
         it('should have 33% of the votes for D when B votes', async () => {
-            await instance.createCandidature({ from: userD });
-            await instance.vote(userD, { from: userB });
-
             assertions.equal((await instance.getVotationResult(userD)).toNumber(), 33);
             assertions.deepEqual(await instance.getMembers({ from: userA }), [userA, userB, userC]);
         });

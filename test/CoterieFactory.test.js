@@ -16,16 +16,10 @@ contract('CoterieFactory with 2 coterie instances', ([userA, userB, userC, userD
 
         it('should 2 coteries', async () => {
             const contracts = await instance.getCoteries();
-09
+
             assertions.equal(contracts.length, 2);
             assertions.equal(await (await Coterie.at(contracts[0])).name(), 'Test club 1');
             assertions.equal(await (await Coterie.at(contracts[1])).name(), 'Test club 2');
         });
-
-        // var MyContract = web3.eth.contract(abi);
-        // var myContractInstance = MyContract .at('0x**********');
-        // var owner = myContractInstance .owner.call();
-
-
     });
 });
