@@ -11,7 +11,6 @@ contract Coterie {
     using Candidatures for Candidatures.CandidatureList;
     using Candidatures for Candidatures.CandidatureView;
     
-
     string public name;
 	EnumerableSet.AddressSet private members;
 	Candidatures.CandidatureList private candidatures;
