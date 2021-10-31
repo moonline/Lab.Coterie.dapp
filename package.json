@@ -9,7 +9,8 @@
   "scripts": {
     "test": "truffle test",
     "compile": "truffle compile",
-    "network": "ganache-cli"
+    "network": "ganache-cli",
+    "migrate": "truffle migrate"
   },
   "name": "coterie",
   "version": "0.1.0",
