@@ -28,7 +28,7 @@ class AccountContainer extends React.Component {
 				setCurrentAccount: this.setCurrentAccount
 			}}
 		>
-			{this.props.children}
+			{this.props.children(this.state.currentAccount)}
 		</AccountContext.Provider>
 	);
 }

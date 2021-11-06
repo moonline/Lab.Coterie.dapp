@@ -33,6 +33,7 @@ class CoterieContainer extends React.Component {
 	componentDidUpdate = (previousProps, previousState) => {
 		if (this.state.contract && !this.state.coteries) {
 			this.loadCoteries();
+            this.estimateGas();
 		}
 	};
 
@@ -42,79 +43,52 @@ class CoterieContainer extends React.Component {
 		this.state = {
 			contract: null,
 			coteries: null,
-			currentCoterie: null
+			currentCoterie: null,
+            estimatedGas: {}
 		};
 	}
 
 	setCurrentCoterie = coterie => this.setState({ currentCoterie: coterie });
 
 	loadCoteries = async () => {
-		const coteries = await this.state.contract.methods.getCoteries().call();
-		this.setState({ coteries });
-		console.info(`${coteries.length} Coteries loaded`);
+		const coterieAddresses = await this.state.contract.methods.getCoteries().call();
+		this.setState({ coteries: coterieAddresses.map(coterieAddress => ({ id: coterieAddress })) });
+		console.info(`${coterieAddresses.length} Coteries loaded`);
 	};
 
-	createCoterie = async name => {
-		// TODO
-		// return await this.contract.methods.createCoterie(name).send();
+    estimateGas = async () => {
+        const createCoterieGasEstimation = await this.state.contract.methods.createCoterie('Test').estimateGas({ from: this.props.currentAccount, gas: 2000000 });
+        console.info(`Create coterie gas cost: ${createCoterieGasEstimation}`);
+        this.setState((prevState, props) => ({ estimatedGas: { ...prevState.estimatedGas, createCoterie: createCoterieGasEstimation } }));
+    };
+
+	createCoterie = async () => {
+        const { name } = this.state.currentCoterie;
+
+        try {
+            const result = await this.state.contract.methods.createCoterie(name).send({ from: this.props.currentAccount, gas: Math.round(this.state.estimatedGas.createCoterie * 1.2) });
+            console.info('Created coterie: ', result);
+        } catch (error) {
+            console.error(error);
+        }
 	};
+
+    addCoterie = () => this.setCurrentCoterie({ id: 'NEW', name: '' });
 
 	render = () => (
 		<CoterieContext.Provider
 			value={{
 				coteries: this.state.coteries,
 				currentCoterie: this.state.currentCoterie,
-				setCurrentCoterie: this.setCurrentCoterie,
-				createCoterie: this.createCoterie
+                estimatedGas: this.state.estimatedGas,
+                setCurrentCoterie: this.setCurrentCoterie,
+				createCoterie: this.createCoterie,
+                addCoterie: this.addCoterie
 			}}
 		>
 			{this.props.children}
 		</CoterieContext.Provider>
 	);
 }
-
-/*const CoterieContainer = ({ children }) => {
-    const { web3, networkId } = useContext(NetworkContext);
-    const [contract, setContract] = useState();
-    const [coteries, setCoteries] = useState();
-    const [currentCoterie, setCurrentCoterie] = useState();
-
-    useEffect(() => {
-        // TODO move to class
-        const loadCoteries = async () => {
-	        const _coteries = await contract.methods.getCoteries().call();
-            setCoteries(_coteries);
-            console.info('Coteries loaded');
-        };
-
-        const createCoterie = async name => {
-		    // TODO
-		    // return await this.contract.methods.createCoterie(name).send();
-	    };
-    }, []);
-
-    useEffect(() => {
-        web3 && networkId && (async () => {
-		    const deployedNetwork = CoterieListContract.networks[networkId];
-		    const _contract = new web3.eth.Contract(
-			    CoterieListContract.abi,
-			    deployedNetwork && deployedNetwork.address
-		    );
-            setContract(_contract);
-
-    		loadCoteries();
-        })();
-    }, [web3, networkId]);
-
-    useEffect(() => {
-        contract && loadCoteries && loadCoteries();
-    }, [contract, loadCoteries]);
-
-    return (
-        <CoterieContext.Provider value={{ coteries, currentCoterie, setCurrentCoterie, createCoterie }}>
-            {children}
-        </CoterieContext.Provider>
-    );
-}*/
 
 export default CoterieContainer;

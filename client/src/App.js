@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 import Header from './components/header';
 import CoterieList from './components/coterie-list';
+import CoterieDetail from './components/coterie-detail';
 
 import './App.css';
 
@@ -26,9 +27,7 @@ const App = ({ networkReady }) => {
 					<CoterieList />
 				</Col>
 				<Col xs={9}>
-					<h1>Good to Go!</h1>
-					<p>Your Truffle Box is installed and ready.</p>
-					<h2>Smart Contract Example</h2>
+					<CoterieDetail />
 				</Col>
 			</Row>
 		</Container>

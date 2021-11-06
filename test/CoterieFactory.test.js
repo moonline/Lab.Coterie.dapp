@@ -14,7 +14,7 @@ contract('CoterieFactory with 2 coterie instances', ([userA, userB, userC, userD
             await instance.createCoterie('Test club 2');
         });
 
-        it('should 2 coteries', async () => {
+        it('should have 2 coteries', async () => {
             const contracts = await instance.getCoteries();
 
             assertions.equal(contracts.length, 2);

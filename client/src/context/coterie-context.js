@@ -4,7 +4,8 @@ const CoterieContext = React.createContext({
 	coteries: null,
 	currentCoterie: null,
 	setCurrentCoterie: () => {},
-	createCoterie: () => {}
+	createCoterie: () => {},
+	addCoterie: () => {}
 });
 
 export default CoterieContext;

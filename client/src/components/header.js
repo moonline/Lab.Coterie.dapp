@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { PersonCircle as PersonCircleIcon, Person as PersonIcon } from 'react-bootstrap-icons';
 
 import AccountContext from '../context/account-context';
 
@@ -17,23 +18,13 @@ const Header = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-						{/*accountList.accounts && (
-				            <NavDropdown title={accountList.currentAccount.substring(0,10)} id="accounts-dropdown">
-					            {accountList.accounts.map(account => (
-						            <NavDropdown.Item
-                                        key={account}
-							            eventKey={account}
-							            active={accountList.currentAccount === account}
-                                        onClick={() => accountList.setCurrentAccount(account)}
-						            >
-							            {account.substring(0, 10)}
-						            </NavDropdown.Item>
-					            ))}
-				            </NavDropdown>
-			            )*/}
 						{accounts && (
 							<NavDropdown
-								title={currentAccount ? currentAccount.substring(0, 10) : 'Account'}
+								title={<>
+                                    <PersonCircleIcon />&nbsp;
+                                    {currentAccount ? currentAccount.substring(0, 10) : 'Account'}
+                                </>
+                                }
 								id="accounts-dropdown"
 							>
 								{accounts.map(account => (
@@ -43,6 +34,7 @@ const Header = () => {
 										active={currentAccount === account}
 										onClick={() => setCurrentAccount(account)}
 									>
+                                        <PersonIcon />&nbsp;
 										{account.substring(0, 10)}
 									</NavDropdown.Item>
 								))}

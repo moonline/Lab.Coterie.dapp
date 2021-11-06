@@ -11,9 +11,10 @@ contract CoterieFactory {
 
 	EnumerableSet.AddressSet private coteries;
 
-	function createCoterie(string memory name) public {
+	function createCoterie(string memory name) public returns (address) {
         Coterie coterie = new Coterie(name);
         EnumerableSet.add(coteries, address(coterie));
+        return address(coterie);
 	}
 
 	function getCoteries() public view returns (address[] memory) {

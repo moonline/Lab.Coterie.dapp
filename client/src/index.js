@@ -13,9 +13,11 @@ ReactDOM.render(
 	<NetworkContainer>
 		{(web3, networkId) => (
 			<AccountContainer web3={web3} networkId={networkId}>
-				<CoterieContainer web3={web3} networkId={networkId}>
-					<App networkReady={!!networkId} />
-				</CoterieContainer>
+                {currentAccount => 
+				    <CoterieContainer web3={web3} networkId={networkId} currentAccount={currentAccount}>
+					    <App networkReady={!!networkId} />
+				    </CoterieContainer>
+                }
 			</AccountContainer>
 		)}
 	</NetworkContainer>,
