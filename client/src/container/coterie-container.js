@@ -58,7 +58,6 @@ class CoterieContainer extends React.Component {
 
     estimateGas = async () => {
         const createCoterieGasEstimation = await this.state.contract.methods.createCoterie('Test').estimateGas({ from: this.props.currentAccount, gas: 2000000 });
-        console.info(`Create coterie gas cost: ${createCoterieGasEstimation}`);
         this.setState((prevState, props) => ({ estimatedGas: { ...prevState.estimatedGas, createCoterie: createCoterieGasEstimation } }));
     };
 
@@ -67,7 +66,9 @@ class CoterieContainer extends React.Component {
 
         try {
             const result = await this.state.contract.methods.createCoterie(name).send({ from: this.props.currentAccount, gas: Math.round(this.state.estimatedGas.createCoterie * 1.2) });
-            console.info('Created coterie: ', result);
+            console.info('Created coterie: ', result.events.contractCreated);
+            const newCoterie = { id: result.events.contractCreated.returnValues.coterieAddress };
+            this.setState((prevState, props) => ({ coteries: [...prevState.coteries, newCoterie], currentCoterie: newCoterie }));
         } catch (error) {
             console.error(error);
         }

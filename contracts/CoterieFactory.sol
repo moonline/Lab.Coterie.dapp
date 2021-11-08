@@ -8,13 +8,17 @@ import { Coterie } from "./Coterie.sol";
 
 contract CoterieFactory {
 	using EnumerableSet for EnumerableSet.AddressSet;
+    
+    event contractCreated(address coterieAddress);
 
 	EnumerableSet.AddressSet private coteries;
 
-	function createCoterie(string memory name) public returns (address) {
+	function createCoterie(string memory name) public returns (Coterie) {
         Coterie coterie = new Coterie(name);
         EnumerableSet.add(coteries, address(coterie));
-        return address(coterie);
+        // TODO test
+        emit contractCreated(address(coterie));
+        return coterie;
 	}
 
 	function getCoteries() public view returns (address[] memory) {
