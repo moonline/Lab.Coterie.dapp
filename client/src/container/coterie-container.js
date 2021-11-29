@@ -3,18 +3,7 @@ import React from 'react';
 import CoterieContext from '../context/coterie-context';
 
 import CoterieListContract from '../contracts/CoterieFactory.json';
-
-/*const run = async () => {
-    const web3 = new Web3('http://localhost:8545');
-    console.log('accounts', await web3.eth.getAccounts());
-	const networkId = await web3.eth.net.getId();
-	const deployedNetwork = CoterieListContract.networks[networkId];
-	const contract = new web3.eth.Contract(
-		CoterieListContract.abi,
-		deployedNetwork && deployedNetwork.address
-	);
-    console.log('coteries', await contract.methods.getCoteries().call());
-}*/
+import CoterieContract from '../contracts/Coterie.json';
 
 class CoterieContainer extends React.Component {
 	static getDerivedStateFromProps(props, state) {
@@ -33,7 +22,10 @@ class CoterieContainer extends React.Component {
 	componentDidUpdate = (previousProps, previousState) => {
 		if (this.state.contract && !this.state.coteries) {
 			this.loadCoteries();
-            this.estimateGas();
+			this.estimateGas();
+		}
+		if (this.props.currentAccount !== previousProps.currentAccount && this.state.currentCoterie) {
+			this.loadCoterie(this.state.currentCoterie);
 		}
 	};
 
@@ -44,47 +36,117 @@ class CoterieContainer extends React.Component {
 			contract: null,
 			coteries: null,
 			currentCoterie: null,
-            estimatedGas: {}
+			estimatedGas: {}
 		};
 	}
 
-	setCurrentCoterie = coterie => this.setState({ currentCoterie: coterie });
+	setCurrentCoterie = coterie => {
+		this.setState({ currentCoterie: coterie });
+		this.loadCoterie(coterie);
+	};
 
 	loadCoteries = async () => {
-		const coterieAddresses = await this.state.contract.methods.getCoteries().call();
+		const coterieAddresses = await this.state.contract.methods
+			.getCoteries()
+			.call({ from: this.props.currentAccount });
 		this.setState({ coteries: coterieAddresses.map(coterieAddress => ({ id: coterieAddress })) });
 		console.info(`${coterieAddresses.length} Coteries loaded`);
 	};
 
-    estimateGas = async () => {
-        const createCoterieGasEstimation = await this.state.contract.methods.createCoterie('Test').estimateGas({ from: this.props.currentAccount, gas: 2000000 });
-        this.setState((prevState, props) => ({ estimatedGas: { ...prevState.estimatedGas, createCoterie: createCoterieGasEstimation } }));
-    };
+	loadCoterie = async coterie => {
+		if (coterie.id !== 'NEW') {
+			const contract = new this.props.web3.eth.Contract(CoterieContract.abi, coterie.id);
+			const currentCoterie = await contract.methods
+				.getDetails()
+				.call({ from: this.props.currentAccount });
+			const {
+				coterieName: name,
+				numberOfMembers,
+				isMember,
+				numberOfCandidatures,
+				hasCandidature
+			} = currentCoterie;
 
-	createCoterie = async () => {
-        const { name } = this.state.currentCoterie;
+			this.setState({
+				currentCoterie: {
+					...coterie,
+					name,
+					numberOfMembers,
+					isMember,
+					numberOfCandidatures,
+					hasCandidature
+				}
+			});
 
-        try {
-            const result = await this.state.contract.methods.createCoterie(name).send({ from: this.props.currentAccount, gas: Math.round(this.state.estimatedGas.createCoterie * 1.2) });
-            console.info('Created coterie: ', result.events.contractCreated);
-            const newCoterie = { id: result.events.contractCreated.returnValues.coterieAddress };
-            this.setState((prevState, props) => ({ coteries: [...prevState.coteries, newCoterie], currentCoterie: newCoterie }));
-        } catch (error) {
-            console.error(error);
-        }
+			if (hasCandidature) {
+				const myCandidatureVotationResult = await contract.methods
+					.getVotationResult(this.props.currentAccount)
+					.call({ from: this.props.currentAccount });
+
+				this.setState((prevState, props) => ({
+					currentCoterie: {
+						...prevState.currentCoterie,
+						myCandidatureVotationResult
+					}
+				}));
+			}
+
+			if (isMember) {
+				const members = await contract.methods
+					.getMembers()
+					.call({ from: this.props.currentAccount });
+				const candidatures = await contract.methods
+					.getCandidatures()
+					.call({ from: this.props.currentAccount });
+
+				this.setState((prevState, props) => ({
+					currentCoterie: {
+						...prevState.currentCoterie,
+						members,
+						candidatures
+					}
+				}));
+			}
+		}
 	};
 
-    addCoterie = () => this.setCurrentCoterie({ id: 'NEW', name: '' });
+	estimateGas = async () => {
+		const createCoterieGasEstimation = await this.state.contract.methods
+			.createCoterie('Test')
+			.estimateGas({ from: this.props.currentAccount, gas: 2000000 });
+		this.setState((prevState, props) => ({
+			estimatedGas: { ...prevState.estimatedGas, createCoterie: createCoterieGasEstimation }
+		}));
+	};
+
+	createCoterie = async () => {
+		const { name } = this.state.currentCoterie;
+
+		try {
+			const result = await this.state.contract.methods.createCoterie(name).send({
+				from: this.props.currentAccount,
+				gas: Math.round(this.state.estimatedGas.createCoterie * 1.2)
+			});
+			console.info('Created coterie: ', result.events.contractCreated);
+			const newCoterie = { id: result.events.contractCreated.returnValues.coterieAddress };
+			this.setCurrentCoterie(newCoterie);
+			this.setState((prevState, props) => ({ coteries: [...prevState.coteries, newCoterie] }));
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	addCoterie = () => this.setCurrentCoterie({ id: 'NEW', name: '' });
 
 	render = () => (
 		<CoterieContext.Provider
 			value={{
 				coteries: this.state.coteries,
 				currentCoterie: this.state.currentCoterie,
-                estimatedGas: this.state.estimatedGas,
-                setCurrentCoterie: this.setCurrentCoterie,
+				estimatedGas: this.state.estimatedGas,
+				setCurrentCoterie: this.setCurrentCoterie,
 				createCoterie: this.createCoterie,
-                addCoterie: this.addCoterie
+				addCoterie: this.addCoterie
 			}}
 		>
 			{this.props.children}

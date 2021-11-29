@@ -14,7 +14,7 @@ contract CoterieFactory {
 	EnumerableSet.AddressSet private coteries;
 
 	function createCoterie(string memory name) public returns (Coterie) {
-        Coterie coterie = new Coterie(name);
+        Coterie coterie = new Coterie(name, msg.sender);
         EnumerableSet.add(coteries, address(coterie));
         // TODO test
         emit contractCreated(address(coterie));

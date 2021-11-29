@@ -4,9 +4,11 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { PersonCircle as PersonCircleIcon, Person as PersonIcon } from 'react-bootstrap-icons';
+import { PersonCircle as PersonCircleIcon } from 'react-bootstrap-icons';
 
 import AccountContext from '../context/account-context';
+
+import Account from './account';
 
 const Header = () => {
 	const { accounts, currentAccount, setCurrentAccount } = useContext(AccountContext);
@@ -20,11 +22,7 @@ const Header = () => {
 					<Nav className="me-auto">
 						{accounts && (
 							<NavDropdown
-								title={<>
-                                    <PersonCircleIcon />&nbsp;
-                                    {currentAccount ? currentAccount.substring(0, 10) : 'Account'}
-                                </>
-                                }
+								title={<Account id={currentAccount} icon={<PersonCircleIcon />} />}
 								id="accounts-dropdown"
 							>
 								{accounts.map(account => (
@@ -34,8 +32,7 @@ const Header = () => {
 										active={currentAccount === account}
 										onClick={() => setCurrentAccount(account)}
 									>
-                                        <PersonIcon />&nbsp;
-										{account.substring(0, 10)}
+										<Account id={account} />
 									</NavDropdown.Item>
 								))}
 							</NavDropdown>

@@ -15,10 +15,11 @@ contract Coterie {
 	EnumerableSet.AddressSet private members;
 	Candidatures.CandidatureList private candidatures;
 
-	constructor(string memory _name) {
+    // Test initiator bug
+	constructor(string memory _name, address initiator) {
 		name = _name;
-        Candidatures.addCandidature(candidatures, msg.sender);
-		EnumerableSet.add(members, msg.sender);
+        Candidatures.addCandidature(candidatures, initiator);
+		EnumerableSet.add(members, initiator);
 	}
 
     // candidatures
@@ -86,4 +87,28 @@ contract Coterie {
 
 		return EnumerableSet.values(members);
 	}
+
+    // general
+    // TODO test
+    function getDetails() public view returns (
+        string memory coterieName,
+        uint numberOfMembers,
+        bool isMember,
+        uint numberOfCandidatures,
+        bool hasCandidature,
+        address requestor,
+        string memory isAMember,
+        string memory hasACandidature
+    ) {
+        return (
+            name,
+            EnumerableSet.length(members),
+            EnumerableSet.contains(members, msg.sender),
+            Candidatures.numberOfCandidatures(candidatures),
+            Candidatures.hasCandidature(candidatures, msg.sender),
+            msg.sender,
+            EnumerableSet.contains(members, msg.sender) ? "member" : "not member",
+            Candidatures.hasCandidature(candidatures, msg.sender) ? "candidate" : "not candidate"
+        );
+    }
 }
