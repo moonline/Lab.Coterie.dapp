@@ -9,7 +9,7 @@ import NewCoterieForm from './new-coterie-form';
 import Account from './account';
 
 const CoterieDetail = () => {
-	const { currentCoterie, setCurrentCoterie, createCoterie, estimatedGas } =
+	const { currentCoterie, setCurrentCoterie, createCoterie, estimatedGas, createCandidature } =
 		useContext(CoterieContext);
 
 	if (currentCoterie !== null) {
@@ -29,7 +29,9 @@ const CoterieDetail = () => {
 						<p>{currentCoterie.myCandidatureVotationResult}</p>
 					</>
 				) : (
-					<Button variant="primary">Create candidature</Button>
+					<Button variant="primary" onClick={createCandidature}>
+						Create candidature ({estimatedGas.createCandidature} gas cost)
+					</Button>
 				)}
 
 				<h3>
