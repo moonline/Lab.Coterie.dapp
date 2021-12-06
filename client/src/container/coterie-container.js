@@ -22,7 +22,7 @@ class CoterieContainer extends React.Component {
 	componentDidUpdate = (previousProps, previousState) => {
 		if (this.state.contract && !this.state.coteries) {
 			this.loadCoteries();
-			this.estimateGas();
+			this.estimateCoterieCreationGas();
 		}
 		if (this.props.currentAccount !== previousProps.currentAccount && this.state.currentCoterie) {
 			this.loadCoterie(this.state.currentCoterie);
@@ -53,6 +53,30 @@ class CoterieContainer extends React.Component {
 		console.info(`${coterieAddresses.length} Coteries loaded`);
 	};
 
+	setVoteCandidateGasEstimation = async (contract, candidatures) => {
+		const gasEstimations = await Promise.all(
+			candidatures
+				.map(candidature => candidature.candidate)
+				.filter(candidate => candidate !== this.props.currentAccount)
+				.map(async candidate => {
+					const gasEstimation = await contract.methods
+						.vote(candidate)
+						.estimateGas({ from: this.props.currentAccount, gas: 2000000 });
+					return [candidate, gasEstimation];
+				})
+		);
+
+		this.setState((prevState, props) => ({
+			estimatedGas: {
+				...prevState.estimatedGas,
+				voteCandidate: gasEstimations.reduce(
+					(estimations, [candidate, estimation]) => ({ ...estimations, [candidate]: estimation }),
+					{}
+				)
+			}
+		}));
+	};
+
 	loadCoterieMembersAndCandidatures = async (contract, coterie) => {
 		if (coterie.hasCandidature) {
 			const myCandidatureVotationResult = await contract.methods
@@ -65,6 +89,17 @@ class CoterieContainer extends React.Component {
 					myCandidatureVotationResult
 				}
 			}));
+		} else {
+			const createCandidatureGasEstimation = await contract.methods
+				.createCandidature()
+				.estimateGas({ from: this.props.currentAccount, gas: 2000000 });
+
+			this.setState((prevState, props) => ({
+				estimatedGas: {
+					...prevState.estimatedGas,
+					createCandidature: createCandidatureGasEstimation
+				}
+			}));
 		}
 
 		if (coterie.isMember) {
@@ -72,6 +107,8 @@ class CoterieContainer extends React.Component {
 			const candidatures = await contract.methods
 				.getCandidatures()
 				.call({ from: this.props.currentAccount });
+
+			this.setVoteCandidateGasEstimation(contract, candidatures);
 
 			this.setState((prevState, props) => ({
 				currentCoterie: {
@@ -97,11 +134,6 @@ class CoterieContainer extends React.Component {
 				hasCandidature
 			} = currentCoterie;
 
-			const createCandidatureGasEstimation = !hasCandidature
-				? await contract.methods
-						.createCandidature()
-						.estimateGas({ from: this.props.currentAccount, gas: 2000000 })
-				: undefined;
 			const updatedCurrentCoterie = {
 				...coterie,
 				contract,
@@ -111,18 +143,15 @@ class CoterieContainer extends React.Component {
 				numberOfCandidatures,
 				hasCandidature
 			};
-			this.setState((prevState, props) => ({
-				estimatedGas: {
-					...prevState.estimatedGas,
-					createCandidature: createCandidatureGasEstimation
-				},
+
+			this.setState({
 				currentCoterie: updatedCurrentCoterie
-			}));
+			});
 			this.loadCoterieMembersAndCandidatures(contract, updatedCurrentCoterie);
 		}
 	};
 
-	estimateGas = async () => {
+	estimateCoterieCreationGas = async () => {
 		const createCoterieGasEstimation = await this.state.contract.methods
 			.createCoterie('Test')
 			.estimateGas({ from: this.props.currentAccount, gas: 2000000 });
@@ -163,16 +192,31 @@ class CoterieContainer extends React.Component {
 		}
 	};
 
+	voteCandidate = async candidate => {
+		try {
+			const result = await this.state.currentCoterie.contract.methods.vote(candidate).send({
+				from: this.props.currentAccount,
+				gas: Math.round(this.state.estimatedGas.voteCandidate[candidate] * 1.2)
+			});
+			console.info('Voted candidate: ', result);
+			this.loadCoterie(this.state.currentCoterie);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	render = () => (
 		<CoterieContext.Provider
 			value={{
 				coteries: this.state.coteries,
-				currentCoterie: this.state.currentCoterie,
 				estimatedGas: this.state.estimatedGas,
+				currentCoterie: this.state.currentCoterie,
+
 				setCurrentCoterie: this.setCurrentCoterie,
 				createCoterie: this.createCoterie,
 				addCoterie: this.addCoterie,
-				createCandidature: this.createCandidature
+				createCandidature: this.createCandidature,
+				voteCandidate: this.voteCandidate
 			}}
 		>
 			{this.props.children}

@@ -1,70 +1,79 @@
 import React, { useContext } from 'react';
 
-import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
+import AccountContext from '../context/account-context';
 import CoterieContext from '../context/coterie-context';
 
-import NewCoterieForm from './new-coterie-form';
 import Account from './account';
+import FormattedNumber from './formatted-number';
 
 const CoterieDetail = () => {
-	const { currentCoterie, setCurrentCoterie, createCoterie, estimatedGas, createCandidature } =
+	const { currentAccount } = useContext(AccountContext);
+	const { currentCoterie, estimatedGas, createCandidature, voteCandidate } =
 		useContext(CoterieContext);
 
-	if (currentCoterie !== null) {
-		return currentCoterie.id === 'NEW' ? (
-			<NewCoterieForm
-				setCurrentCoterie={setCurrentCoterie}
-				createCoterie={createCoterie}
-				currentCoterie={currentCoterie}
-				estimatedGas={estimatedGas}
-			/>
-		) : (
-			<>
-				<h2>Coterie ({currentCoterie.name || currentCoterie.id})</h2>
-				{currentCoterie.hasCandidature ? (
-					<>
-						<h3>My candidature</h3>
-						<p>{currentCoterie.myCandidatureVotationResult}</p>
-					</>
-				) : (
-					<Button variant="primary" onClick={createCandidature}>
-						Create candidature ({estimatedGas.createCandidature} gas cost)
-					</Button>
-				)}
+	return (
+		<>
+			<h2>Coterie ({currentCoterie.name || currentCoterie.id})</h2>
+			{currentCoterie.hasCandidature ? (
+				<>
+					<h3>My candidature</h3>
+					<p>{currentCoterie.myCandidatureVotationResult}</p>
+				</>
+			) : (
+				<Button variant="primary" onClick={createCandidature}>
+					Create candidature (~
+					<FormattedNumber format="0.0a">{estimatedGas.createCandidature}</FormattedNumber> gas
+					cost)
+				</Button>
+			)}
 
-				<h3>
-					Candidatures ({currentCoterie.numberOfCandidatures})
-					{currentCoterie.hasCandidature && ' - CANDIDATE'}
-				</h3>
-				{currentCoterie.isMember && currentCoterie.candidatures && (
-					<ul>
-						{currentCoterie.candidatures.map(candidature => (
-							<li key={candidature.candidate}>
-								<Account id={candidature.candidate} />:{candidature.votes}
-							</li>
-						))}
-					</ul>
-				)}
+			<h3>
+				Candidates ({currentCoterie.numberOfCandidatures})
+				{currentCoterie.hasCandidature && ' - CANDIDATE'}
+			</h3>
+			{currentCoterie.isMember && currentCoterie.candidatures && (
+				<ul>
+					{currentCoterie.candidatures.map(candidature => (
+						<li key={candidature.candidate}>
+							<Account id={candidature.candidate} />: {candidature.votes}
+							{candidature.candidate === currentAccount ? (
+								' - MYSELF'
+							) : (
+								<Button variant="primary" onClick={() => voteCandidate(candidature.candidate)}>
+									Vote candidate{' '}
+									{estimatedGas.voteCandidate && (
+										<>
+											(~
+											<FormattedNumber format="0.0a">
+												{estimatedGas.voteCandidate[candidature.candidate]}
+											</FormattedNumber>{' '}
+											gas)
+										</>
+									)}
+								</Button>
+							)}
+						</li>
+					))}
+				</ul>
+			)}
 
-				<h3>
-					Members ({currentCoterie.numberOfMembers}){currentCoterie.isMember && ' - MEMBER'}
-				</h3>
-				{currentCoterie.isMember && currentCoterie.members && (
-					<ul>
-						{currentCoterie.members.map(member => (
-							<li key={member}>
-								<Account id={member} />
-							</li>
-						))}
-					</ul>
-				)}
-			</>
-		);
-	} else {
-		return <Alert variant="primary">Select a coterie or create a new one.</Alert>;
-	}
+			<h3>
+				Members ({currentCoterie.numberOfMembers}){currentCoterie.isMember && ' - MEMBER'}
+			</h3>
+			{currentCoterie.isMember && currentCoterie.members && (
+				<ul>
+					{currentCoterie.members.map(member => (
+						<li key={member}>
+							<Account id={member} />
+							{member === currentAccount && ' - MYSELF'}
+						</li>
+					))}
+				</ul>
+			)}
+		</>
+	);
 };
 
 export default CoterieDetail;

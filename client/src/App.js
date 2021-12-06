@@ -6,8 +6,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Header from './components/header';
-import CoterieList from './components/coterie-list';
-import CoterieDetail from './components/coterie-detail';
+import ListSection from './components/list-section';
+import DetailSection from './components/detail-section';
 
 import './App.css';
 
@@ -24,10 +24,10 @@ const App = ({ networkReady }) => {
 			</Row>
 			<Row>
 				<Col xs={3}>
-					<CoterieList />
+					<ListSection />
 				</Col>
 				<Col xs={9}>
-					<CoterieDetail />
+					<DetailSection />
 				</Col>
 			</Row>
 		</Container>
