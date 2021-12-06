@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Coterie } from "./Coterie.sol";
 
 
-contract CoterieFactory {
+contract CoterieList {
 	using EnumerableSet for EnumerableSet.AddressSet;
     
     event contractCreated(address coterieAddress);

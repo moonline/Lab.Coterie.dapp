@@ -15,7 +15,6 @@ contract Coterie {
 	EnumerableSet.AddressSet private members;
 	Candidatures.CandidatureList private candidatures;
 
-    // Test initiator bug
 	constructor(string memory _name, address initiator) {
 		name = _name;
         Candidatures.addCandidature(candidatures, initiator);

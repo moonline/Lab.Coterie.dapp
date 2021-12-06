@@ -17,7 +17,8 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         beforeEach(async () => {
             instance = await Coterie.new(
                 'Test club',
-                { from: userA }
+                userA,
+                { from: userB }
             );
         });
 
@@ -25,11 +26,11 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
             assertions.equal(await instance.name(), 'Test club');
         });
 
-        it('should have spent ether of user A', async () => {
+        it('should have spent ether of user B', async () => {
             assertions.isBelow(Number(await getEtherBalance(userA)), 100);
         });
 
-        it('should have a candidature with 0 votes', async () => {
+        it('should have a candidature with 0 votes for A', async () => {
             assertions.equal(
                 await instance.numberOfMyVotes({ from: userA }),
                 0
@@ -80,6 +81,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         beforeEach(async () => {
             instance = await Coterie.new(
                 'Test club 2',
+                userA,
                 { from: userA }
             );
             await instance.createCandidature({ from: userB });
@@ -121,6 +123,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         beforeEach(async () => {
             instance = await Coterie.new(
                 'Test club 2',
+                userA,
                 { from: userA }
             );
             await instance.createCandidature({ from: userB });

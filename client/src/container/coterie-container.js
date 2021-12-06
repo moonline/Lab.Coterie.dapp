@@ -2,7 +2,7 @@ import React from 'react';
 
 import CoterieContext from '../context/coterie-context';
 
-import CoterieListContract from '../contracts/CoterieFactory.json';
+import CoterieListContract from '../contracts/CoterieList.json';
 import CoterieContract from '../contracts/Coterie.json';
 
 class CoterieContainer extends React.Component {
