@@ -152,6 +152,16 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
 
             assertions.equal((await instance.getVotationResult(userD)).toNumber(), 75);
         });
+
+        it('should return details for user A', async () => {
+            const details = await instance.getDetails({ from: userA });
+
+            assertions.equal(details.coterieName, 'Test club 2');
+            assertions.equal(details.numberOfMembers.toNumber(), 3);
+            assertions.equal(details.isMember, true);
+            assertions.equal(details.numberOfCandidatures.toNumber(), 4);
+            assertions.equal(details.hasCandidature, true);
+        });
     });
 });
 

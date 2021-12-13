@@ -94,20 +94,14 @@ contract Coterie {
         uint numberOfMembers,
         bool isMember,
         uint numberOfCandidatures,
-        bool hasCandidature,
-        address requestor,
-        string memory isAMember,
-        string memory hasACandidature
+        bool hasCandidature
     ) {
         return (
             name,
             EnumerableSet.length(members),
             EnumerableSet.contains(members, msg.sender),
             Candidatures.numberOfCandidatures(candidatures),
-            Candidatures.hasCandidature(candidatures, msg.sender),
-            msg.sender,
-            EnumerableSet.contains(members, msg.sender) ? "member" : "not member",
-            Candidatures.hasCandidature(candidatures, msg.sender) ? "candidate" : "not candidate"
+            Candidatures.hasCandidature(candidatures, msg.sender)
         );
     }
 }

@@ -17,6 +17,7 @@ contract('A coterie', ([user0, user1, user2]) => {
     before(async () => {
         coterieInstance = await Coterie.new(
             'Test club 2',
+            user1,
             { from: user1 }
         );
     });
