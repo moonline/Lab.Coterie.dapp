@@ -6,7 +6,7 @@ import NetworkContainer from './container/network-container';
 import AccountContainer from './container/account-container';
 import CoterieContainer from './container/coterie-container';
 
-import App from './App';
+import App from './components/app';
 import './index.css';
 
 ReactDOM.render(

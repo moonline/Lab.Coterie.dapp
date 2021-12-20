@@ -6,6 +6,7 @@ import { CloudArrowUpFill as CloudArrowUpIcon } from 'react-bootstrap-icons';
 
 import CoterieContext from '../context/coterie-context';
 
+import SectionHeader from './section-header';
 import FormattedNumber from './formatted-number';
 
 const NewCoterieForm = () => {
@@ -13,7 +14,7 @@ const NewCoterieForm = () => {
 		useContext(CoterieContext);
 	return (
 		<>
-			<h2>New Coterie</h2>
+			<SectionHeader>New Coterie</SectionHeader>
 			<Form>
 				<Form.Group className="mb-3" controlId="coterieName">
 					<Form.Label>Name</Form.Label>

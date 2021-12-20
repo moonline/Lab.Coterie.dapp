@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
 
-import Alert from 'react-bootstrap/Alert';
-
 import CoterieContext from '../context/coterie-context';
 
 import CoterieList from './coterie-list';
+import LoadingPanel from './loading-panel';
 
 const ListSection = () => {
 	const { coteries } = useContext(CoterieContext);
 
-	return coteries !== null ? <CoterieList /> : <Alert variant="primary">Loading...</Alert>;
+	return coteries !== null ? <CoterieList /> : <LoadingPanel />;
 };
 
 export default ListSection;

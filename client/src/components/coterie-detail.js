@@ -7,6 +7,7 @@ import CoterieContext from '../context/coterie-context';
 
 import Account from './account';
 import FormattedNumber from './formatted-number';
+import SectionHeader from './section-header';
 
 const CoterieDetail = () => {
 	const { currentAccount } = useContext(AccountContext);
@@ -15,7 +16,7 @@ const CoterieDetail = () => {
 
 	return (
 		<>
-			<h2>Coterie ({currentCoterie.name || currentCoterie.id})</h2>
+			<SectionHeader>{currentCoterie.name || `Coterie (${currentCoterie.id})`}</SectionHeader>
 			{currentCoterie.hasCandidature ? (
 				<>
 					<h3>My candidature</h3>

@@ -7,22 +7,28 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { PersonCircle as PersonCircleIcon } from 'react-bootstrap-icons';
 
 import AccountContext from '../context/account-context';
-
 import Account from './account';
+import CoterieLogo from './coterie-logo';
 
 const Header = () => {
 	const { accounts, currentAccount, setCurrentAccount } = useContext(AccountContext);
 
 	return (
-		<Navbar bg="light" expand="lg">
-			<Container>
-				<Navbar.Brand href="#">Coterie</Navbar.Brand>
+		<Navbar expand="lg">
+			<Container className="px-0">
+				<Navbar.Brand href="#" className="text-white">
+					<CoterieLogo /> Coterie
+				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
 						{accounts && (
 							<NavDropdown
-								title={<Account id={currentAccount} icon={<PersonCircleIcon />} />}
+								title={
+									<span className="text-white">
+										<Account id={currentAccount} icon={<PersonCircleIcon />} />
+									</span>
+								}
 								id="accounts-dropdown"
 							>
 								{accounts.map(account => (
