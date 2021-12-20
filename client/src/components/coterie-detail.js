@@ -23,7 +23,7 @@ const CoterieDetail = () => {
 					<p>{currentCoterie.myCandidatureVotationResult}</p>
 				</>
 			) : (
-				<Button variant="primary" onClick={createCandidature}>
+				<Button variant="success" onClick={createCandidature}>
 					Create candidature (~
 					<FormattedNumber format="0.0a">{estimatedGas.createCandidature}</FormattedNumber> gas
 					cost)
@@ -42,7 +42,7 @@ const CoterieDetail = () => {
 							{candidature.candidate === currentAccount ? (
 								' - MYSELF'
 							) : (
-								<Button variant="primary" onClick={() => voteCandidate(candidature.candidate)}>
+								<Button variant="success" onClick={() => voteCandidate(candidature.candidate)}>
 									Vote candidate{' '}
 									{estimatedGas.voteCandidate && (
 										<>

@@ -4,5 +4,5 @@
 	margin-right: calc(var(--bs-gutter-x) * -0.5);
 	padding: 0.5rem 1rem;
 	background: darkgrey;
-    color: white;
+	color: white;
 }

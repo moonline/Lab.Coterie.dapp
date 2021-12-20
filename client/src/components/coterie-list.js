@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { PlusCircleFill as PlusCircleIcon } from 'react-bootstrap-icons';
 
 import CoterieContext from '../context/coterie-context';
@@ -8,14 +9,14 @@ import CenterPanel from './center-panel';
 import SectionHeader from './section-header';
 
 const CoterieList = () => {
-	const { coteries, addCoterie, setCurrentCoterie } = useContext(CoterieContext);
+	const { coteries, addCoterie, currentCoterie, setCurrentCoterie } = useContext(CoterieContext);
 
 	return coteries.length > 0 ? (
 		<>
 			<SectionHeader
 				actions={
 					<Button
-						variant="primary"
+						variant="success"
 						type="button"
 						title="Create coterie"
 						size="sm"
@@ -27,17 +28,22 @@ const CoterieList = () => {
 			>
 				Coteries ({coteries.length})
 			</SectionHeader>
-			<ul>
+			<ListGroup variant="flush">
 				{coteries.map(coterie => (
-					<li key={coterie.id} onClick={() => setCurrentCoterie(coterie)}>
+					<ListGroup.Item
+                        className={currentCoterie && coterie.id === currentCoterie.id ? 'bg-success text-white' : 'bg-transparent text-white'}
+						key={coterie.id}
+						action
+						onClick={() => setCurrentCoterie(coterie)}
+					>
 						{coterie.id.slice(-10)}
-					</li>
+					</ListGroup.Item>
 				))}
-			</ul>
+			</ListGroup>
 		</>
 	) : (
 		<CenterPanel>
-			<Button variant="primary" type="button" onClick={addCoterie}>
+			<Button variant="success" type="button" onClick={addCoterie}>
 				<PlusCircleIcon /> Create Coterie
 			</Button>
 		</CenterPanel>

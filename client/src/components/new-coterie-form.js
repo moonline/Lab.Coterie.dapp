@@ -28,7 +28,7 @@ const NewCoterieForm = () => {
 				</Form.Group>
 
 				<Button
-					variant="primary"
+					variant="success"
 					type="button"
 					onClick={createCoterie}
 					disabled={currentCoterie.name.length < 3}
