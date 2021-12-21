@@ -11,8 +11,14 @@ Install:
 
 * [Node.js](https://nodejs.org/en/download/)
 * [Yarn](https://classic.yarnpkg.com/en/docs/install)
-* [Truffle](https://www.trufflesuite.com/docs/truffle/getting-started/installation) (global)
-* Metamask plugin for your Browser
+* Metamask plugin for your Browser:
+    * [Firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
+    * [Chrome plugin](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn)
+
+### Recomended plugins to develop with Visual Studio Code
+
+* [Ethereum Solidity Language for Visual Studio Code
+](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity)
 
 ### Install dependencies
 
@@ -24,7 +30,7 @@ yarn install
 ### Compile
 
 ```sh
-truffle compile
+yarn compile
 ```
 
 ### Migrate
@@ -33,7 +39,7 @@ truffle compile
 # start ganache network
 yarn network
 # run migrations
-truffle migrate
+yarn migrate
 ```
 
 ### Test
