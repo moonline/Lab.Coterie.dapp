@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import { Candidatures } from "../Candidatures.sol";
-
+import {Candidatures} from "../Candidatures.sol";
 
 contract CandidaturesMock {
     using Candidatures for Candidatures.CandidatureList;
@@ -10,7 +9,7 @@ contract CandidaturesMock {
 
     Candidatures.CandidatureList private list;
 
-    function numberOfCandidatures() public view returns (uint) {
+    function numberOfCandidatures() public view returns (uint256) {
         return Candidatures.numberOfCandidatures(list);
     }
 
@@ -22,12 +21,15 @@ contract CandidaturesMock {
         return Candidatures.addCandidature(list, candidate);
     }
 
-
     function removeCandidature(address candidate) public {
         return Candidatures.removeCandidature(list, candidate);
     }
-    
-    function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
+
+    function getCandidatures()
+        public
+        view
+        returns (Candidatures.CandidatureView[] memory)
+    {
         return Candidatures.getCandidatures(list);
     }
 
@@ -35,7 +37,7 @@ contract CandidaturesMock {
         return Candidatures.addVote(list, candidate, voter);
     }
 
-    function numberOfVotes(address candidate) public view returns (uint) {
+    function numberOfVotes(address candidate) public view returns (uint256) {
         return Candidatures.numberOfVotes(list, candidate);
     }
 

@@ -3,53 +3,60 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-import { Candidatures } from "./Candidatures.sol";
-
+import {Candidatures} from "./Candidatures.sol";
 
 contract Coterie {
-	using EnumerableSet for EnumerableSet.AddressSet;
+    using EnumerableSet for EnumerableSet.AddressSet;
     using Candidatures for Candidatures.CandidatureList;
     using Candidatures for Candidatures.CandidatureView;
-    
-    string public name;
-	EnumerableSet.AddressSet private members;
-	Candidatures.CandidatureList private candidatures;
 
-	constructor(string memory _name, address initiator) {
-		name = _name;
+    string public name;
+    EnumerableSet.AddressSet private members;
+    Candidatures.CandidatureList private candidatures;
+
+    constructor(string memory _name, address initiator) {
+        name = _name;
         Candidatures.addCandidature(candidatures, initiator);
-		EnumerableSet.add(members, initiator);
-	}
+        EnumerableSet.add(members, initiator);
+    }
 
     // candidatures
-	function createCandidature() public {
+    function createCandidature() public {
         Candidatures.addCandidature(candidatures, msg.sender);
-	}
+    }
 
-	function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
-		require(
+    function getCandidatures()
+        public
+        view
+        returns (Candidatures.CandidatureView[] memory)
+    {
+        require(
             EnumerableSet.contains(members, msg.sender),
             "PermissionError: Only members can access candidatures"
         );
 
         return Candidatures.getCandidatures(candidatures);
-	}
+    }
 
     // votes
-	function numberOfVotes(address candidate) public view returns (uint) {
-		return Candidatures.numberOfVotes(candidatures, candidate);
-	}
+    function numberOfVotes(address candidate) public view returns (uint256) {
+        return Candidatures.numberOfVotes(candidatures, candidate);
+    }
 
-	function numberOfMyVotes() public view returns (uint) {
-		return Candidatures.numberOfVotes(candidatures, msg.sender);
-	}
+    function numberOfMyVotes() public view returns (uint256) {
+        return Candidatures.numberOfVotes(candidatures, msg.sender);
+    }
 
-    function getVotationResult(address candidate) public view returns (uint) {
+    function getVotationResult(address candidate)
+        public
+        view
+        returns (uint256)
+    {
         bool isMember = EnumerableSet.contains(members, candidate);
         uint8 membershipSelfVote = isMember ? 1 : 0;
-        uint votes = numberOfVotes(candidate) + membershipSelfVote;
+        uint256 votes = numberOfVotes(candidate) + membershipSelfVote;
 
-        return ((votes * 1000 / EnumerableSet.length(members)) + 5) / 10;
+        return (((votes * 1000) / EnumerableSet.length(members)) + 5) / 10;
     }
 
     function vote(address candidate) public {
@@ -78,24 +85,28 @@ contract Coterie {
         }
     }
 
-	function getMembers() public view returns (address[] memory) {
-		require(
+    function getMembers() public view returns (address[] memory) {
+        require(
             EnumerableSet.contains(members, msg.sender),
             "PermissionError: Only members can access member list"
         );
 
-		return EnumerableSet.values(members);
-	}
+        return EnumerableSet.values(members);
+    }
 
     // general
     // TODO test
-    function getDetails() public view returns (
-        string memory coterieName,
-        uint numberOfMembers,
-        bool isMember,
-        uint numberOfCandidatures,
-        bool hasCandidature
-    ) {
+    function getDetails()
+        public
+        view
+        returns (
+            string memory coterieName,
+            uint256 numberOfMembers,
+            bool isMember,
+            uint256 numberOfCandidatures,
+            bool hasCandidature
+        )
+    {
         return (
             name,
             EnumerableSet.length(members),
