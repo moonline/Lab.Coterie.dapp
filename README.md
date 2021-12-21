@@ -11,7 +11,7 @@ Install:
 
 * [Node.js](https://nodejs.org/en/download/)
 * [Yarn](https://classic.yarnpkg.com/en/docs/install)
-* Metamask plugin for your Browser:
+* Metamask plugin for your Browser (Optional):
     * [Firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
     * [Chrome plugin](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn)
 
