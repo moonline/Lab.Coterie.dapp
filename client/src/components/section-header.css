@@ -3,6 +3,6 @@
 	margin-left: calc(var(--bs-gutter-x) * -0.5);
 	margin-right: calc(var(--bs-gutter-x) * -0.5);
 	padding: 0.5rem 1rem;
-	background: darkgrey;
+	background: darkslategray;
 	color: white;
 }
