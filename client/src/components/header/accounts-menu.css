@@ -1,0 +1,6 @@
+.accounts-menu .dropdown-menu .dropdown-item.active {
+	background: rgba(var(--bs-success-rgb), var(--bs-bg-opacity));
+}
+.accounts-menu .dropdown-toggle::after {
+	color: white;
+}

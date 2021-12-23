@@ -16,7 +16,7 @@ const CoterieDetail = () => {
 
 	return (
 		<>
-			<SectionHeader>{currentCoterie.name || `Coterie (${currentCoterie.id})`}</SectionHeader>
+			<SectionHeader subTitle={currentCoterie.id}>{currentCoterie.name}</SectionHeader>
 			{currentCoterie.hasCandidature ? (
 				<>
 					<h3>My candidature</h3>

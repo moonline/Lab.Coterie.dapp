@@ -5,11 +5,16 @@ import Col from 'react-bootstrap/Col';
 
 import './section-header.css';
 
-const SectionHeader = ({ actions, children }) => (
+const SectionHeader = ({ actions, children, subTitle }) => (
 	<h2 className="sectionHeader container-fluid">
-		<Row>
+		<Row className="align-items-baseline">
 			<Col>{children}</Col>
-			<Col xs="auto">{actions}</Col>
+			{subTitle && (
+				<Col xs="auto">
+					<p class="h6 m-0">{subTitle}</p>
+				</Col>
+			)}
+			{actions && <Col xs="auto">{actions}</Col>}
 		</Row>
 	</h2>
 );

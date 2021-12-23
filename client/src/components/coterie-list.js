@@ -31,7 +31,11 @@ const CoterieList = () => {
 			<ListGroup variant="flush">
 				{coteries.map(coterie => (
 					<ListGroup.Item
-                        className={currentCoterie && coterie.id === currentCoterie.id ? 'bg-success text-white' : 'bg-transparent text-white'}
+						className={
+							currentCoterie && coterie.id === currentCoterie.id
+								? 'bg-success text-white'
+								: 'bg-transparent text-white'
+						}
 						key={coterie.id}
 						action
 						onClick={() => setCurrentCoterie(coterie)}
