@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { CloudArrowUpFill as CloudArrowUpIcon } from 'react-bootstrap-icons';
 
-import CoterieContext from '../context/coterie-context';
+import CoterieContext from '../../context/coterie-context';
 
-import SectionHeader from './section-header';
-import FormattedNumber from './formatted-number';
+import SectionHeader from '../common/section-header';
+import FormattedNumber from '../common/formatted-number';
 
 const NewCoterieForm = () => {
 	const { currentCoterie, setCurrentCoterie, createCoterie, estimatedGas } =

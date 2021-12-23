@@ -3,7 +3,7 @@ import React from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { PersonCircle as PersonCircleIcon } from 'react-bootstrap-icons';
 
-import Account from '../account';
+import Account from '../common/account';
 
 import './accounts-menu.css';
 

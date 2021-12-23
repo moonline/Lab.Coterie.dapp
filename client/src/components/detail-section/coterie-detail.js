@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import AccountContext from '../context/account-context';
-import CoterieContext from '../context/coterie-context';
+import AccountContext from '../../context/account-context';
+import CoterieContext from '../../context/coterie-context';
 
-import Account from './account';
-import FormattedNumber from './formatted-number';
-import SectionHeader from './section-header';
+import Account from '../common/account';
+import FormattedNumber from '../common/formatted-number';
+import SectionHeader from '../common/section-header';
 
 const CoterieDetail = () => {
 	const { currentAccount } = useContext(AccountContext);

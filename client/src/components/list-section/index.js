@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 
-import CoterieContext from '../context/coterie-context';
+import CoterieContext from '../../context/coterie-context';
+
+import LoadingPanel from '../common/loading-panel';
 
 import CoterieList from './coterie-list';
-import LoadingPanel from './loading-panel';
 
 const ListSection = () => {
 	const { coteries } = useContext(CoterieContext);

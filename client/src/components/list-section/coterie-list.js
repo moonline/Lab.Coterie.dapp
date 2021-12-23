@@ -4,9 +4,10 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { PlusCircleFill as PlusCircleIcon } from 'react-bootstrap-icons';
 
-import CoterieContext from '../context/coterie-context';
-import CenterPanel from './center-panel';
-import SectionHeader from './section-header';
+import CoterieContext from '../../context/coterie-context';
+
+import CenterPanel from '../common/center-panel';
+import SectionHeader from '../common/section-header';
 
 const CoterieList = () => {
 	const { coteries, addCoterie, currentCoterie, setCurrentCoterie } = useContext(CoterieContext);

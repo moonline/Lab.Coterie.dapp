@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import './section-header.css';
 
 const SectionHeader = ({ actions, children, subTitle }) => (
-	<h2 className="sectionHeader container-fluid">
+	<h2 className="section-header container-fluid">
 		<Row className="align-items-baseline">
 			<Col>{children}</Col>
 			{subTitle && (

@@ -4,10 +4,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import LoadingPanel from './common/loading-panel';
+
 import Header from './header';
 import ListSection from './list-section';
 import DetailSection from './detail-section';
-import LoadingPanel from './loading-panel';
 
 import './app.css';
 
