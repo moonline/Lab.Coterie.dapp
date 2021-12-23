@@ -5,9 +5,11 @@ import Button from 'react-bootstrap/Button';
 import AccountContext from '../../context/account-context';
 import CoterieContext from '../../context/coterie-context';
 
-import Account from '../common/account';
 import FormattedNumber from '../common/formatted-number';
 import SectionHeader from '../common/section-header';
+
+import CandidaturesList from './candidatures-list';
+import MemberList from './member-list';
 
 const CoterieDetail = () => {
 	const { currentAccount } = useContext(AccountContext);
@@ -35,43 +37,19 @@ const CoterieDetail = () => {
 				{currentCoterie.hasCandidature && ' - CANDIDATE'}
 			</h3>
 			{currentCoterie.isMember && currentCoterie.candidatures && (
-				<ul>
-					{currentCoterie.candidatures.map(candidature => (
-						<li key={candidature.candidate}>
-							<Account id={candidature.candidate} />: {candidature.votes}
-							{candidature.candidate === currentAccount ? (
-								' - MYSELF'
-							) : (
-								<Button variant="success" onClick={() => voteCandidate(candidature.candidate)}>
-									Vote candidate{' '}
-									{estimatedGas.voteCandidate && (
-										<>
-											(~
-											<FormattedNumber format="0.0a">
-												{estimatedGas.voteCandidate[candidature.candidate]}
-											</FormattedNumber>{' '}
-											gas)
-										</>
-									)}
-								</Button>
-							)}
-						</li>
-					))}
-				</ul>
+				<CandidaturesList
+					candidatures={currentCoterie.candidatures}
+					estimatedGas={estimatedGas}
+					currentAccount={currentAccount}
+					onCandidateVote={voteCandidate}
+				/>
 			)}
 
 			<h3>
 				Members ({currentCoterie.numberOfMembers}){currentCoterie.isMember && ' - MEMBER'}
 			</h3>
 			{currentCoterie.isMember && currentCoterie.members && (
-				<ul>
-					{currentCoterie.members.map(member => (
-						<li key={member}>
-							<Account id={member} />
-							{member === currentAccount && ' - MYSELF'}
-						</li>
-					))}
-				</ul>
+				<MemberList members={currentCoterie.members} currentAccount={currentAccount} />
 			)}
 		</>
 	);
