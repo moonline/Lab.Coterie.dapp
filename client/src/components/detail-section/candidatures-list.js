@@ -26,7 +26,7 @@ const VoteButton = ({ candidate, gasEstimation, onCandidateVote }) => (
 const CandidaturesList = ({ candidatures, estimatedGas, currentAccount, onCandidateVote }) => (
 	<Row xs={1} md={3} className="g-3">
 		{candidatures.map(({ candidate, votes }) => (
-			<Col>
+			<Col key={candidate}>
 				<AccountCard account={candidate} border={candidate === currentAccount && 'success'}>
 					<Card.Text>{votes} votes</Card.Text>
 					{candidate === currentAccount ? (

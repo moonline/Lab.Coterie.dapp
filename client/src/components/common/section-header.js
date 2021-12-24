@@ -11,7 +11,7 @@ const SectionHeader = ({ actions, children, subTitle }) => (
 			<Col>{children}</Col>
 			{subTitle && (
 				<Col xs="auto">
-					<p class="h6 m-0">{subTitle}</p>
+					<p className="h6 m-0">{subTitle}</p>
 				</Col>
 			)}
 			{actions && <Col xs="auto">{actions}</Col>}

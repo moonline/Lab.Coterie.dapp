@@ -3,11 +3,11 @@ import React from 'react';
 import Badge from 'react-bootstrap/Badge';
 
 const LabelBadge = ({ children, ...props }) => (
-	<p className="h4">
+	<span className="h4">
 		<Badge bg="secondary" className="fw-normal p-2" {...props}>
 			{children}
 		</Badge>
-	</p>
+	</span>
 );
 
 export default LabelBadge;

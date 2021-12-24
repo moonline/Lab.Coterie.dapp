@@ -11,7 +11,7 @@ import LabelBadge from '../common/lable-badge';
 const MemberList = ({ members, currentAccount }) => (
 	<Row xs={1} md={3} className="g-3">
 		{members.map(member => (
-			<Col>
+			<Col key={member}>
 				<AccountCard account={member} border={member === currentAccount && 'success'}>
 					<Card.Text>
 						<LabelBadge>{member === currentAccount ? 'Myself' : <PersonIcon />}</LabelBadge>
