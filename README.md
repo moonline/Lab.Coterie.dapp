@@ -1,6 +1,62 @@
 # Coterie dApp
 
-Create a democratic communities on the Éthereum blockchain.
+<div style="display: flex; flex-direction: row; align-items: center; padding: 20px 0;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/512px-Ethereum-icon-purple.svg.png" height="50px" /> Ethereum
+<img src="https://trufflesuite.com/img/truffle-logo-light.svg" height="50px" /> Truffle
+<img src="https://trufflesuite.com/img/ganache-logo-dark.svg" height="50px" style="margin: 0 10px;" /> Ganache
+<img src="https://docs.soliditylang.org/en/v0.8.11/_static/logo.svg" height="50px" /> Solidity
+<img src="./documentation/icon-web3.png" height="50px" /> Web3.js
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/512px-React-icon.svg.png" height="50px" /> React
+<img src="https://v5.getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo-shadow.png" height="50px" /> Bootstrap
+</div>
+  
+
+Create democratic communities on the Ethereum blockchain.
+
+
+<img src="./documentation/create-coterie-screen.png" width="400px" />
+<img src="./documentation/my-candidature-screen.png" width="400px" />
+<img src="./documentation/candidatures-screen.png" width="400px" />
+<img src="./documentation/members-screen.png" width="400px" />
+
+## Features
+
+* Smart Contract based Coterie and candidature creation
+* Candidature voting
+* Coterie, candidatures and members listing
+
+
+## Usage
+
+<img src="./documentation/welcome-screen.png" width="500px" />
+
+### Create a new Coterie
+
+<img src="./documentation/create-coterie-screen.png" width="500px" />
+
+### Create a candidature 
+
+<img src="./documentation/create-candidature-screen.png" width="500px" />
+
+### Wait for votes
+
+<img src="./documentation/not-yet-voted-candidature-screen.png" width="500px" />
+
+### Check my candidature
+
+<img src="./documentation/my-candidature-screen.png" width="500px" />
+
+### Check and vote candidatures
+
+<img src="./documentation/candidatures-screen.png" width="500px" />
+
+### List members
+
+<img src="./documentation/members-screen.png" width="500px" />
+
+### Vote candidate
+
+<img src="./documentation/vote-candidates-screen.png" width="500px" />
 
 
 ## Development
@@ -13,7 +69,7 @@ Install:
 * [Yarn](https://classic.yarnpkg.com/en/docs/install)
 * Metamask plugin for your Browser (Optional):
     * [Firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
-    * [Chrome plugin](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn)
+    * [Chrome plugin](https://chrome.google.com/webstore/detail/metamask/)
 
 ### Recomended plugins to develop with Visual Studio Code
 
