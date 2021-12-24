@@ -1,0 +1,5 @@
+.candidature-list-item .votes {
+	width: 2rem;
+	display: inline-block;
+	vertical-align: text-bottom;
+}

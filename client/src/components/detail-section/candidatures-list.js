@@ -9,6 +9,9 @@ import { PatchCheckFill as PatchCheckIcon } from 'react-bootstrap-icons';
 import AccountCard from '../common/account-card';
 import FormattedNumber from '../common/formatted-number';
 import LabelBadge from '../common/lable-badge';
+import DoughnutChart from '../common/doughnut-chart';
+
+import './candidatures-list.css';
 
 const VoteButton = ({ candidate, gasEstimation, onCandidateVote }) => (
 	<Button variant="success" onClick={() => onCandidateVote(candidate)}>
@@ -23,12 +26,27 @@ const VoteButton = ({ candidate, gasEstimation, onCandidateVote }) => (
 	</Button>
 );
 
-const CandidaturesList = ({ candidatures, estimatedGas, currentAccount, onCandidateVote }) => (
+const CandidaturesList = ({
+	candidatures,
+	estimatedGas,
+	currentAccount,
+	numberOfMembers,
+	onCandidateVote
+}) => (
 	<Row xs={1} md={3} className="g-3">
 		{candidatures.map(({ candidate, votes }) => (
 			<Col key={candidate}>
-				<AccountCard account={candidate} border={candidate === currentAccount && 'success'}>
-					<Card.Text>{votes} votes</Card.Text>
+				<AccountCard
+					className="candidature-list-item text-center"
+					account={candidate}
+					border={candidate === currentAccount && 'success'}
+				>
+					<Card.Text>
+						<div className="votes">
+							<DoughnutChart percent={votes / (numberOfMembers - 1)} />
+						</div>
+						{votes} votes
+					</Card.Text>
 					{candidate === currentAccount ? (
 						<LabelBadge>Myself</LabelBadge>
 					) : (
