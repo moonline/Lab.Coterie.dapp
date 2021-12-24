@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import Button from 'react-bootstrap/Button';
+import { PatchPlusFill as PatchPlusIcon } from 'react-bootstrap-icons';
 
 import AccountContext from '../../context/account-context';
 import CoterieContext from '../../context/coterie-context';
@@ -19,37 +20,38 @@ const CoterieDetail = () => {
 	return (
 		<>
 			<SectionHeader subTitle={currentCoterie.id}>{currentCoterie.name}</SectionHeader>
-			{currentCoterie.hasCandidature ? (
+			{currentCoterie.hasCandidature && (
 				<>
 					<h3>My candidature</h3>
 					<p>{currentCoterie.myCandidatureVotationResult}</p>
 				</>
-			) : (
+			)}
+
+			<h3>Candidates ({currentCoterie.numberOfCandidatures})</h3>
+			{!currentCoterie.hasCandidature && (
 				<Button variant="success" onClick={createCandidature}>
-					Create candidature (~
+					<PatchPlusIcon />
+					&nbsp; Create candidature (~
 					<FormattedNumber format="0.0a">{estimatedGas.createCandidature}</FormattedNumber> gas
 					cost)
 				</Button>
 			)}
-
-			<h3>
-				Candidates ({currentCoterie.numberOfCandidatures})
-				{currentCoterie.hasCandidature && ' - CANDIDATE'}
-			</h3>
-			{currentCoterie.isMember && currentCoterie.candidatures && (
+			{currentCoterie.isMember && currentCoterie.candidatures ? (
 				<CandidaturesList
 					candidatures={currentCoterie.candidatures}
 					estimatedGas={estimatedGas}
 					currentAccount={currentAccount}
 					onCandidateVote={voteCandidate}
 				/>
+			) : (
+				<p class="text-muted py-2">Only members can access candidature list</p>
 			)}
 
-			<h3>
-				Members ({currentCoterie.numberOfMembers}){currentCoterie.isMember && ' - MEMBER'}
-			</h3>
-			{currentCoterie.isMember && currentCoterie.members && (
+			<h3>Members ({currentCoterie.numberOfMembers})</h3>
+			{currentCoterie.isMember && currentCoterie.members ? (
 				<MemberList members={currentCoterie.members} currentAccount={currentAccount} />
+			) : (
+				<p class="text-muted py-2">Only members can access member list</p>
 			)}
 		</>
 	);

@@ -5,8 +5,8 @@ import { PeopleFill as PeopleIcon } from 'react-bootstrap-icons';
 
 import Account from './account';
 
-const AccountCard = ({ account, children }) => (
-	<Card className="text-center">
+const AccountCard = ({ account, children, ...props }) => (
+	<Card className="text-center" {...props}>
 		<Card.Header>
 			<PeopleIcon size={72} />
 			<Card.Title>
