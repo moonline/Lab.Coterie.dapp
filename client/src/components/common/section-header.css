@@ -1,0 +1,8 @@
+.section-header {
+	width: calc(100% + var(--bs-gutter-x));
+	margin-left: calc(var(--bs-gutter-x) * -0.5);
+	margin-right: calc(var(--bs-gutter-x) * -0.5);
+	padding: 0.5rem 1rem;
+	background: darkslategray;
+	color: white;
+}

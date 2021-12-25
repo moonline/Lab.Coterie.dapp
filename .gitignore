@@ -1,2 +1,4 @@
 node_modules
-
+accounts.txt
+yarn-error.log
+bin
