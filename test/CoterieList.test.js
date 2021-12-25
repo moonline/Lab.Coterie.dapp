@@ -26,7 +26,7 @@ contract('CoterieList with 2 coterie instances', ([userA, userB, userC, userD]) 
             const testClub1 = await Coterie.at(contracts[0]);
 
             assertions.equal(await testClub1.name(), 'Test club 1');
-            
+
             const members1 = await testClub1.getMembers({ from: userA });
             assertions.equal(members1.length, 1);
             assertions.equal(members1[0], userA);
