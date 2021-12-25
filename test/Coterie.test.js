@@ -65,7 +65,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         });
 
         it('should have candidatures with 0 votes for users A and B when user B creates a candidature', async () => {
-            let expectedValues = [[ userA, "0" ],[ userB, "0" ]];
+            let expectedValues = [[userA, "0"], [userB, "0"]];
             await instance.createCandidature({ from: userB });
 
             assertions.deepEqual(
@@ -77,7 +77,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
 
     describe('A coterie with a vote for user B', () => {
         let instance;
-        
+
         beforeEach(async () => {
             instance = await Coterie.new(
                 'Test club 2',
@@ -119,7 +119,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
 
     describe('A coterie with 3 members', () => {
         let instance;
-        
+
         beforeEach(async () => {
             instance = await Coterie.new(
                 'Test club 2',
@@ -164,4 +164,3 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         });
     });
 });
-

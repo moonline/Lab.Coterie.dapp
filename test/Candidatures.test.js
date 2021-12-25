@@ -10,7 +10,7 @@ contract('Candidatures library', ([userA, userB, userC]) => {
             assertions.equal(await instance.numberOfCandidatures(), 0);
         });
     });
-    
+
     describe('add users A and B', async () => {
         let instance;
 
@@ -34,7 +34,7 @@ contract('Candidatures library', ([userA, userB, userC]) => {
         });
 
         it('should have 0 votes for users A and B ', async () => {
-            let expectedValues = [[ userA, "0" ], [ userB, "0" ]];
+            let expectedValues = [[userA, "0"], [userB, "0"]];
             assertions.deepEqual(await instance.getCandidatures(), expectedValues);
         });
 
@@ -56,7 +56,7 @@ contract('Candidatures library', ([userA, userB, userC]) => {
             await instance.addCandidature(userC);
             await instance.removeCandidature(userA);
 
-            let expectedValues = [[ userC, "0" ],[ userB, "0" ]];
+            let expectedValues = [[userC, "0"], [userB, "0"]];
             assertions.deepEqual(await instance.getCandidatures(), expectedValues);
             assertions.equal(await instance.numberOfCandidatures(), 2);
             assertions.isFalse(await instance.hasCandidature(userA));
@@ -79,12 +79,12 @@ contract('Candidatures library', ([userA, userB, userC]) => {
         });
 
         it('should only have votes for user A', async () => {
-            let expectedValues = [[ userA, "2" ], [ userB, "0" ]];
+            let expectedValues = [[userA, "2"], [userB, "0"]];
             assertions.deepEqual(await instance.getCandidatures(), expectedValues);
         });
 
         it('should not allow voting itself', async () => {
-            await assertions.reverts(                
+            await assertions.reverts(
                 instance.addVote(userA, userA),
                 'PermissionError: A candidate can not vote for himself'
             );
@@ -108,4 +108,3 @@ contract('Candidatures library', ([userA, userB, userC]) => {
         });
     });
 });
-

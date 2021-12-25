@@ -13,10 +13,9 @@
     "network": "ganache-cli",
     "migrate": "truffle migrate"
   },
-  "name": "coterie",
-  "version": "0.1.0",
-  "description": "A democratic community smart contract",
-  "main": "index.js",
+  "name": "coterie-dapp-contract",
+  "version": "0.2.0",
+  "description": "A democratic community smart contract based on Ethereum",
   "repository": "https://github.com/moonline/Lab.Coterie.dapp",
   "author": "Moonline <moonline@users.noreply.github.com>",
   "license": "MIT"

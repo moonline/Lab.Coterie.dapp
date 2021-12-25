@@ -1,27 +1,32 @@
 # Coterie dApp
 
 <div style="display: flex; flex-direction: row; align-items: center; padding: 20px 0;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/512px-Ethereum-icon-purple.svg.png" height="50px" /> Ethereum
-<img src="https://trufflesuite.com/img/truffle-logo-light.svg" height="50px" /> Truffle
-<img src="https://trufflesuite.com/img/ganache-logo-dark.svg" height="50px" style="margin: 0 10px;" /> Ganache
-<img src="https://docs.soliditylang.org/en/v0.8.11/_static/logo.svg" height="50px" /> Solidity
-<img src="./documentation/icon-web3.png" height="50px" /> Web3.js
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/512px-React-icon.svg.png" height="50px" /> React
-<img src="https://v5.getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo-shadow.png" height="50px" /> Bootstrap
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/512px-Ethereum-icon-purple.svg.png" height="50px" /> Ethereum
+    <img src="https://trufflesuite.com/img/truffle-logo-light.svg" height="50px" /> Truffle
+    <img src="https://trufflesuite.com/img/ganache-logo-dark.svg" height="50px" style="margin: 0 10px;" /> Ganache
+    <img src="https://docs.soliditylang.org/en/v0.8.11/_static/logo.svg" height="50px" /> Solidity
+    <img src="./documentation/icon-web3.png" height="50px" /> Web3.js
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/512px-React-icon.svg.png" height="50px" /> React
+    <img src="https://v5.getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo-shadow.png" height="50px" /> Bootstrap
 </div>
   
+<img src="./documentation/create-coterie-screen.png" width="500px" />
 
-Create democratic communities on the Ethereum blockchain.
+Create democratic communities stored on the Ethereum blockchain.
 
+<img src="./documentation/my-candidature-screen.png" width="500px" />
 
-<img src="./documentation/create-coterie-screen.png" width="400px" />
-<img src="./documentation/my-candidature-screen.png" width="400px" />
-<img src="./documentation/candidatures-screen.png" width="400px" />
-<img src="./documentation/members-screen.png" width="400px" />
+Create a candidature and get voted by existing members.
+
+<img src="./documentation/candidatures-screen.png" width="500px" />
+
+Vote other candidates and access member list.
+
+<img src="./documentation/members-screen.png" width="500px" />
 
 ## Features
 
-* Smart Contract based Coterie and candidature creation
+* Smart contract based coterie and candidature creation
 * Candidature voting
 * Coterie, candidatures and members listing
 
@@ -107,6 +112,12 @@ yarn network
 ```sh
 # run all tests
 yarn test
+# $ truffle test
+# ...
+#   37 passing (37s)
+# Done in 47.36s.
+```
+```sh
 # run only a specific file
 yarn test test/Coterie.test.js
 # run only tests matching regex
@@ -119,7 +130,6 @@ yarn test -g "should have a candidature"
 
 ```sh
 yarn network
-yarn compile
 yarn migrate
 ```
 
@@ -130,5 +140,6 @@ cd client
 yarn start
 ```
 
-3. Connect Metamask using the secret recovery phrase from the console output of Ganache to import accounts.
+3. Opens the app in your primary navigator at [localhost:3000](http://localhost:3000).
 
+<img src="./documentation/welcome-screen.png" width="500px" />
