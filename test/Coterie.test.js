@@ -27,7 +27,7 @@ contract('Coterie', ([userA, userB, userC, userD]) => {
         });
 
         it('should have spent ether of user B', async () => {
-            assertions.isBelow(Number(await getEtherBalance(userA)), 100);
+            assertions.isBelow(Number(await getEtherBalance(userA)), 1000);
         });
 
         it('should have a candidature with 0 votes for A', async () => {

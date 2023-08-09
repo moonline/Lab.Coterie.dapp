@@ -3,7 +3,7 @@ const assertions = { ...assert };
 const Coterie = artifacts.require('Coterie');
 
 
-const ETH_TO_USD = 3400;
+const ETH_TO_USD = 1630;
 
 const weiToEthAndUSD = (wei) => {
     const eth = web3.utils.fromWei(String(wei), 'ether');
