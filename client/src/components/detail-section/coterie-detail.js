@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Web3 from 'web3';
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -27,7 +28,11 @@ const CoterieDetail = () => {
 					<h3>My candidature</h3>
 					<Card className="text-center my-2" style={{ width: '8rem' }}>
 						<Card.Body>
-							<DoughnutChart percent={currentCoterie.myCandidatureVotationResult / 100} />
+							{currentCoterie.myCandidatureVotationResult && (
+								<DoughnutChart
+									percent={Web3.utils.toNumber(currentCoterie.myCandidatureVotationResult) / 100}
+								/>
+							)}
 						</Card.Body>
 						<Card.Footer>{currentCoterie.myCandidatureVotationResult}%</Card.Footer>
 					</Card>

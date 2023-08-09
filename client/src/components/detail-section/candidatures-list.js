@@ -1,4 +1,5 @@
 import React from 'react';
+import Web3 from 'web3';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -43,7 +44,9 @@ const CandidaturesList = ({
 				>
 					<Card.Text>
 						<div className="votes">
-							<DoughnutChart percent={votes / (numberOfMembers - 1)} />
+							<DoughnutChart
+								percent={Web3.utils.toNumber(votes) / (Web3.utils.toNumber(numberOfMembers) - 1)}
+							/>
 						</div>
 						{votes} votes
 					</Card.Text>

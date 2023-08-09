@@ -1,4 +1,5 @@
 import React from 'react';
+import Web3 from 'web3';
 
 import CoterieContext from '../context/coterie-context';
 
@@ -164,14 +165,20 @@ class CoterieContainer extends React.Component {
 		const { name } = this.state.currentCoterie;
 
 		try {
-			const result = await this.state.contract.methods.createCoterie(name).send({
+			await this.state.contract.methods.createCoterie(name).send({
 				from: this.props.currentAccount,
-				gas: Math.round(this.state.estimatedGas.createCoterie * 1.2)
+				gas: Math.round(Web3.utils.toNumber(this.state.estimatedGas.createCoterie) * 1.2)
 			});
-			console.info('Created coterie: ', result.events.contractCreated);
-			const newCoterie = { id: result.events.contractCreated.returnValues.coterieAddress };
-			this.setCurrentCoterie(newCoterie);
-			this.setState((prevState, props) => ({ coteries: [...prevState.coteries, newCoterie] }));
+			// result.events is no longer available. See https://www.coinclarified.com/p/3-ways-to-subscribe-to-events-with-web3-js/
+			this.state.contract
+				.getPastEvents('contractCreated')
+				.then(events => {
+					console.log('Created coterie', events[0].returnValues.coterieAddress);
+					const newCoterie = { id: events[0].returnValues.coterieAddress };
+					this.setCurrentCoterie(newCoterie);
+					this.setState((prevState, props) => ({ coteries: [...prevState.coteries, newCoterie] }));
+				})
+				.catch(error => console.error(error));
 		} catch (error) {
 			console.error(error);
 		}
@@ -183,7 +190,7 @@ class CoterieContainer extends React.Component {
 		try {
 			const result = await this.state.currentCoterie.contract.methods.createCandidature().send({
 				from: this.props.currentAccount,
-				gas: Math.round(this.state.estimatedGas.createCandidature * 1.2)
+				gas: Math.round(Web3.utils.toNumber(this.state.estimatedGas.createCandidature) * 1.2)
 			});
 			console.info('Created candidature: ', result);
 			this.loadCoterie(this.state.currentCoterie);
@@ -196,7 +203,7 @@ class CoterieContainer extends React.Component {
 		try {
 			const result = await this.state.currentCoterie.contract.methods.vote(candidate).send({
 				from: this.props.currentAccount,
-				gas: Math.round(this.state.estimatedGas.voteCandidate[candidate] * 1.2)
+				gas: Math.round(Web3.utils.toNumber(this.state.estimatedGas.voteCandidate[candidate]) * 1.2)
 			});
 			console.info('Voted candidate: ', result);
 			this.loadCoterie(this.state.currentCoterie);
