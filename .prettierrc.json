@@ -1,9 +1,18 @@
 {
+  "plugins": ["prettier-plugin-solidity"],
   "trailingComma": "none",
   "printWidth": 100,
   "singleQuote": true,
   "arrowParens": "avoid",
   "overrides": [
+    {
+      "files": "*/**/*.sol",
+      "options": {
+        "tabWidth": 4,
+        "useTabs": false,
+        "singleQuote": false
+      }
+    },
     {
       "files": "*.js",
       "options": {

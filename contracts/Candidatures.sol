@@ -23,29 +23,19 @@ library Candidatures {
     }
 
     // candidatures
-    function hasCandidature(CandidatureList storage self, address candidate)
-        public
-        view
-        returns (bool)
-    {
+    function hasCandidature(
+        CandidatureList storage self,
+        address candidate
+    ) public view returns (bool) {
         return self.items[candidate].exists == true;
     }
 
-    function numberOfCandidatures(CandidatureList storage self)
-        public
-        view
-        returns (uint256)
-    {
+    function numberOfCandidatures(CandidatureList storage self) public view returns (uint256) {
         return self.keys.length;
     }
 
-    function addCandidature(CandidatureList storage self, address candidate)
-        public
-    {
-        require(
-            !hasCandidature(self, candidate),
-            "CreateError: Candidature already exists"
-        );
+    function addCandidature(CandidatureList storage self, address candidate) public {
+        require(!hasCandidature(self, candidate), "CreateError: Candidature already exists");
 
         self.items[candidate].exists = true;
         self.keys.push(candidate);
@@ -54,9 +44,7 @@ library Candidatures {
 
     // remove candidature and move last candidature to its place
     // this is cheaper than moving all the items
-    function removeCandidature(CandidatureList storage self, address candidate)
-        public
-    {
+    function removeCandidature(CandidatureList storage self, address candidate) public {
         require(
             hasCandidature(self, candidate),
             "NotFoundError: No candidature found for candidate"
@@ -72,14 +60,10 @@ library Candidatures {
         self.keys.pop();
     }
 
-    function getCandidatures(CandidatureList storage self)
-        public
-        view
-        returns (CandidatureView[] memory)
-    {
-        CandidatureView[] memory candidatureViews = new CandidatureView[](
-            self.keys.length
-        );
+    function getCandidatures(
+        CandidatureList storage self
+    ) public view returns (CandidatureView[] memory) {
+        CandidatureView[] memory candidatureViews = new CandidatureView[](self.keys.length);
         for (uint256 i = 0; i < self.keys.length; i++) {
             CandidatureView memory candidatureView = CandidatureView(
                 self.keys[i],
@@ -91,11 +75,10 @@ library Candidatures {
     }
 
     // votes
-    function numberOfVotes(CandidatureList storage self, address candidate)
-        public
-        view
-        returns (uint256)
-    {
+    function numberOfVotes(
+        CandidatureList storage self,
+        address candidate
+    ) public view returns (uint256) {
         require(
             hasCandidature(self, candidate),
             "NotFoundError: No candidature found for candidate"
@@ -104,28 +87,17 @@ library Candidatures {
         return EnumerableSet.length(self.items[candidate].votes);
     }
 
-    function addVote(
-        CandidatureList storage self,
-        address candidate,
-        address voter
-    ) public {
+    function addVote(CandidatureList storage self, address candidate, address voter) public {
         require(
             hasCandidature(self, candidate),
             "NotFoundError: No candidature found for candidate"
         );
-        require(
-            candidate != voter,
-            "PermissionError: A candidate can not vote for himself"
-        );
+        require(candidate != voter, "PermissionError: A candidate can not vote for himself");
 
         EnumerableSet.add(self.items[candidate].votes, voter);
     }
 
-    function removeVote(
-        CandidatureList storage self,
-        address candidate,
-        address voter
-    ) public {
+    function removeVote(CandidatureList storage self, address candidate, address voter) public {
         require(
             hasCandidature(self, candidate),
             "NotFoundError: No candidature found for candidate"
