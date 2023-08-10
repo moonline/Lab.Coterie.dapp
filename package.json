@@ -17,7 +17,7 @@
     "format": "prettier --write . '*/**/*.sol'"
   },
   "name": "coterie-dapp-contract",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A democratic community smart contract based on Ethereum",
   "repository": "https://github.com/moonline/Lab.Coterie.dapp",
   "author": "Moonline <moonline@users.noreply.github.com>",
