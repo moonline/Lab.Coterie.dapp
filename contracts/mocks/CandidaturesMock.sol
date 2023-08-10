@@ -25,11 +25,7 @@ contract CandidaturesMock {
         return Candidatures.removeCandidature(list, candidate);
     }
 
-    function getCandidatures()
-        public
-        view
-        returns (Candidatures.CandidatureView[] memory)
-    {
+    function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
         return Candidatures.getCandidatures(list);
     }
 

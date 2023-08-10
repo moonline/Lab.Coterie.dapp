@@ -1,7 +1,7 @@
-const Candidatures = artifacts.require("./Candidatures.sol");
-const CandidaturesMock = artifacts.require("./CandidaturesMock.sol");
-const Coterie = artifacts.require("./Coterie.sol");
-const CoterieList = artifacts.require("./CoterieList.sol");
+const Candidatures = artifacts.require('./Candidatures.sol');
+const CandidaturesMock = artifacts.require('./CandidaturesMock.sol');
+const Coterie = artifacts.require('./Coterie.sol');
+const CoterieList = artifacts.require('./CoterieList.sol');
 
 module.exports = function (deployer) {
 	deployer.deploy(Candidatures);

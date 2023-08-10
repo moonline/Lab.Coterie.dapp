@@ -26,10 +26,9 @@ Vote other candidates and access member list.
 
 ## Features
 
-* Smart contract based coterie and candidature creation
-* Candidature voting
-* Coterie, candidatures and members listing
-
+- Smart contract based coterie and candidature creation
+- Candidature voting
+- Coterie, candidatures and members listing
 
 ## Usage
 
@@ -39,7 +38,7 @@ Vote other candidates and access member list.
 
 <img src="./documentation/create-coterie-screen.png" width="500px" />
 
-### Create a candidature 
+### Create a candidature
 
 <img src="./documentation/create-candidature-screen.png" width="500px" />
 
@@ -63,23 +62,22 @@ Vote other candidates and access member list.
 
 <img src="./documentation/vote-candidates-screen.png" width="500px" />
 
-
 ## Development
 
 ### Environment
 
 Install:
 
-* [Node.js](https://nodejs.org/en/download/)
-* [Yarn](https://classic.yarnpkg.com/en/docs/install)
-* Metamask plugin for your Browser (Optional):
-    * [Firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
-    * [Chrome plugin](https://chrome.google.com/webstore/detail/metamask/)
+- [Node.js](https://nodejs.org/en/download/)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- Metamask plugin for your Browser (Optional):
+  - [Firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
+  - [Chrome plugin](https://chrome.google.com/webstore/detail/metamask/)
 
 ### Recomended plugins to develop with Visual Studio Code
 
-* [Ethereum Solidity Language for Visual Studio Code
-](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity)
+- [Ethereum Solidity Language for Visual Studio Code
+  ](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity)
 
 ### Install dependencies
 
@@ -109,6 +107,7 @@ yarn migrate
 # start ganache network
 yarn network
 ```
+
 ```sh
 # run all tests
 yarn test
@@ -117,11 +116,23 @@ yarn test
 #   37 passing (37s)
 # Done in 47.36s.
 ```
+
 ```sh
 # run only a specific file
 yarn test test/Coterie.test.js
 # run only tests matching regex
 yarn test -g "should have a candidature"
+```
+
+### Pretty print code
+
+```sh
+yarn format
+```
+
+```sh
+cd client
+yarn format
 ```
 
 ### Run frontend

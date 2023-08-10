@@ -25,11 +25,7 @@ contract Coterie {
         Candidatures.addCandidature(candidatures, msg.sender);
     }
 
-    function getCandidatures()
-        public
-        view
-        returns (Candidatures.CandidatureView[] memory)
-    {
+    function getCandidatures() public view returns (Candidatures.CandidatureView[] memory) {
         require(
             EnumerableSet.contains(members, msg.sender),
             "PermissionError: Only members can access candidatures"
@@ -47,11 +43,7 @@ contract Coterie {
         return Candidatures.numberOfVotes(candidatures, msg.sender);
     }
 
-    function getVotationResult(address candidate)
-        public
-        view
-        returns (uint256)
-    {
+    function getVotationResult(address candidate) public view returns (uint256) {
         bool isMember = EnumerableSet.contains(members, candidate);
         uint8 membershipSelfVote = isMember ? 1 : 0;
         uint256 votes = numberOfVotes(candidate) + membershipSelfVote;
